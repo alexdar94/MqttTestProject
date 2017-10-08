@@ -1,5 +1,7 @@
 package my.edu.tarc.kusm_wa14student.communechat.internal;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import my.edu.tarc.kusm_wa14student.communechat.model.Contact;
@@ -40,6 +42,7 @@ public class MqttMessageHandler {
     }
 
     public void setReceived(String received) {
+        Log.e("fuck","setReceived");
         this.received = received;
         this.decode();
     }

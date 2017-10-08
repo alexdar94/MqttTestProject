@@ -37,7 +37,7 @@ public class MessageService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isRunning == false) {
             isRunning = true;
-
+            Log.e("fuck","listening");
             //Start MQTT Connection
             MqttHelper.startMqtt(getApplicationContext());
 
@@ -46,26 +46,31 @@ public class MessageService extends Service {
 
                 @Override
                 public void connectComplete(boolean reconnect, String serverURI) {
+                    Log.e("fuck","connectComplete");
                 }
 
                 @Override
                 public void connectionLost(Throwable cause) {
+                    Log.e("fuck","connectionLost");
                 }
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    sendMessage(message.toString());
+//                    sendMessage(message.toString());
+                    Log.e("fuck message",message.toString()+" "+ topic);
                 }
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
+                    Log.e("fuck","deliveryComplete");
                 }
             });
 
             /* ---! Subscribe to default topic *
                 Change if you don't want subscribe by default
              */
-            MqttHelper.subscribe(MqttHelper.defaultTopic);
+//            MqttHelper.subscribe(MqttHelper.defaultTopic);
+
         }
         return super.onStartCommand(intent, flags, startId);
     }

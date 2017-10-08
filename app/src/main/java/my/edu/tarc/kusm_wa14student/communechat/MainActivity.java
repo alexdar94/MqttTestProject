@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import my.edu.tarc.kusm_wa14student.communechat.adapter.ViewPagerAdapter;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.ChatFragment;
@@ -20,7 +21,15 @@ import my.edu.tarc.kusm_wa14student.communechat.fragments.ContactFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.SearchFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.UserFragment;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MessageService;
+import my.edu.tarc.kusm_wa14student.communechat.internal.MqttAPI;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
+import my.edu.tarc.kusm_wa14student.communechat.internal.ServiceGenerator;
+import my.edu.tarc.kusm_wa14student.communechat.model.ACLRule;
+import my.edu.tarc.kusm_wa14student.communechat.model.MqttUser;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -55,6 +64,66 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
+
+        // Create new user
+        /*service.createNewUser(new MqttUser("alex","123")).enqueue(new Callback<MqttUser>() {
+            @Override
+            public void onResponse(Call<MqttUser> call, Response<MqttUser> response) {
+                if (response.isSuccessful()) {
+                    // user object available
+                } else {
+                    // error response, no access to resource?
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MqttUser> call, Throwable t) {
+                // something went completely south (like no internet connection)
+                Log.e("Error createNewUser", t.getMessage());
+            }
+        });*/
+
+        // List all ACL rules
+        /*service.listACLRules().enqueue(new Callback<List<ACLRule>>() {
+            @Override
+            public void onResponse(Call<List<ACLRule>> call, Response<List<ACLRule>> response) {
+                if (response.isSuccessful()) {
+                    // user object available
+                    for(int i = 0; i<response.body().size(); i++){
+                        Log.e("fuck "+i,response.body().get(i).getUsername()+" "+response.body().get(i).getTopic());
+                    }
+                } else {
+                    // error response, no access to resource?
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ACLRule>> call, Throwable t) {
+                // something went completely south (like no internet connection)
+                Log.e("Error createNewUser", t.getMessage());
+            }
+        });*/
+
+        // Assign new topic to user, topic cannot have space
+        /*service.createNewACLRule(new ACLRule("newtopic", true, false, "admin")).enqueue(new Callback<ACLRule>() {
+            @Override
+            public void onResponse(Call<ACLRule> call, Response<ACLRule> response) {
+                if (response.isSuccessful()) {
+                    // user object available
+                } else {
+                    // error response, no access to resource?
+                }
+                Log.e("success", response.toString());
+            }
+
+            @Override
+            public void onFailure(Call<ACLRule> call, Throwable t) {
+                // something went completely south (like no internet connection)
+                Log.e("Error createNewUser", t.getMessage());
+            }
+        });*/
 
         //Start service
         startService(new Intent(MainActivity.this, MessageService.class));
@@ -132,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewPager.setAdapter(adapter);
+
     }
 
     static class BottomNavigationViewHelper {

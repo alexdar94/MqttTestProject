@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import my.edu.tarc.kusm_wa14student.communechat.model.Contact;
 
 public class ContactFragment extends Fragment {
     //MQTTClient configuration
-    final private String subscriptionTopic = "sensor/test";
+    final private String subscriptionTopic = "admin";
     UpdateListTask task = new UpdateListTask();
     private String TAG = "ContactFragment";
     //ListViewAdapter variables
@@ -46,6 +47,7 @@ public class ContactFragment extends Fragment {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("fuck","mMessageReceiver");
             String message = intent.getStringExtra("message");
             task = new UpdateListTask();
             task.execute(message);
@@ -147,7 +149,9 @@ public class ContactFragment extends Fragment {
         ArrayList<Contact> result = new ArrayList<>();
         MqttMessageHandler msg = new MqttMessageHandler();
         msg.encode(MqttMessageHandler.MqttCommand.REQ_CONTACT_LIST, uid);
-        MqttHelper.publish(subscriptionTopic, msg.getPublish());
+        MqttHelper.subscribe(subscriptionTopic);
+//        MqttHelper.publish(subscriptionTopic, msg.getPublish());
+//        MqttHelper.subscribe(subscriptionTopic);
         return result;
     }
 
@@ -164,6 +168,7 @@ public class ContactFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
+            Log.e("fuck","onPreExecute");
             super.onPreExecute();
         }
 
@@ -172,6 +177,7 @@ public class ContactFragment extends Fragment {
 
             if (!strings[0].isEmpty()) {
                 MqttMessageHandler handler = new MqttMessageHandler();
+                Log.e("fuck","doInBackground");
                 handler.setReceived(strings[0]);
                 if (handler.mqttCommand != null) {
                     switch (handler.mqttCommand) {

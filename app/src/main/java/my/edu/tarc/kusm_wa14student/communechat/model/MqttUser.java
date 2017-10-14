@@ -5,8 +5,8 @@ package my.edu.tarc.kusm_wa14student.communechat.model;
  */
 
 public class MqttUser {
-    String username;
-    String password;
+    public String username;
+    public String password;
 
     public MqttUser(String username, String password) {
         this.username = username;

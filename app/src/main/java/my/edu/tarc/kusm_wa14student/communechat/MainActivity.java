@@ -2,6 +2,7 @@ package my.edu.tarc.kusm_wa14student.communechat;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
@@ -12,7 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import my.edu.tarc.kusm_wa14student.communechat.adapter.ViewPagerAdapter;
@@ -30,6 +35,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static android.R.attr.type;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -60,12 +67,25 @@ public class MainActivity extends AppCompatActivity {
     private String clientTopic = "sensor/test";
     private int QoS = 1;
 
+    private SharedPreferences mPrefs;
+    public MqttUser currentUser;
+    public String currentChatTopic = "";
+    Gson gson = new Gson();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
+        // Retrieve saved current user
+        // from android local storage using Shared preference
+        mPrefs = getSharedPreferences("COMMUNE_CHAT",MODE_PRIVATE);
+        String current = mPrefs.getString("CURRENT_USER", "");
+
+        Type type = new TypeToken<MqttUser>(){}.getType();
+        currentUser= gson.fromJson(mPrefs.getString("CURRENT_USER", ""), type);
+
+//        MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
 
         // Create new user
         /*service.createNewUser(new MqttUser("alex","123")).enqueue(new Callback<MqttUser>() {
@@ -126,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         //Start service
-        startService(new Intent(MainActivity.this, MessageService.class));
+//        startService(new Intent(MainActivity.this, MessageService.class));
 
         //Initialize views
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -203,6 +223,11 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
     }
+
+    public void gotoChatFragment(){
+        viewPager.setCurrentItem(1);
+    }
+
 
     static class BottomNavigationViewHelper {
 

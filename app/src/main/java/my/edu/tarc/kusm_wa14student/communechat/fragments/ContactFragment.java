@@ -149,7 +149,7 @@ public class ContactFragment extends Fragment {
         ArrayList<Contact> result = new ArrayList<>();
         MqttMessageHandler msg = new MqttMessageHandler();
         msg.encode(MqttMessageHandler.MqttCommand.REQ_CONTACT_LIST, uid);
-        MqttHelper.subscribe(subscriptionTopic);
+//        MqttHelper.subscribe(subscriptionTopic);
 //        MqttHelper.publish(subscriptionTopic, msg.getPublish());
 //        MqttHelper.subscribe(subscriptionTopic);
         return result;

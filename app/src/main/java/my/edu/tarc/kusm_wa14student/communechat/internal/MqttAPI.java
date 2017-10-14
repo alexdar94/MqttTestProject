@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by Alex on 08/10/2017.
@@ -27,4 +28,7 @@ public interface MqttAPI {
     @Headers({"Content-Type: application/json"})
     @POST("acl")
     Call<ACLRule> createNewACLRule(@Body ACLRule newACL);
+
+    @GET("user/{username}")
+    Call<MqttUser> findUser(@Path("username") String searchUsername);
 }

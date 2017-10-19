@@ -11,6 +11,8 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import my.edu.tarc.kusm_wa14student.communechat.LoginActivity;
+
 /**
  * Created by Xeosz on 29-Sep-17.
  */
@@ -37,7 +39,7 @@ public class MessageService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isRunning == false) {
             isRunning = true;
-            Log.e("fuck","listening");
+            Log.e("start","listening");
             //Start MQTT Connection
             MqttHelper.startMqtt(getApplicationContext());
 
@@ -46,30 +48,35 @@ public class MessageService extends Service {
 
                 @Override
                 public void connectComplete(boolean reconnect, String serverURI) {
-                    Log.e("fuck","connectComplete");
+                    Log.e("connectComplete","connectComplete");
                 }
 
                 @Override
                 public void connectionLost(Throwable cause) {
-                    Log.e("fuck","connectionLost");
+                    Log.e("connectionLost","connectionLost");
                 }
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-//                    sendMessage(message.toString());
-                    Log.e("fuck message",message.toString()+" "+ topic);
+                    sendMessage(message.toString());
+                    Log.e("messagearrived",topic+ ":"+ message.toString());
+                    /*if(message.toString().substring(0,9).equals("subscribe")){
+                        MqttHelper.subscribe(message.toString().substring(10));
+                    }else{
+
+                    }*/
                 }
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
-                    Log.e("fuck","deliveryComplete");
+                    Log.e("deliveryComplete","deliveryComplete");
                 }
             });
 
             /* ---! Subscribe to default topic *
                 Change if you don't want subscribe by default
              */
-//            MqttHelper.subscribe(MqttHelper.defaultTopic);
+            //MqttHelper.subscribe(MqttHelper.defaultTopic);
 
         }
         return super.onStartCommand(intent, flags, startId);

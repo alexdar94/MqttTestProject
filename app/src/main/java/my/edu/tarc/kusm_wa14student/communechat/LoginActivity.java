@@ -15,6 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.kosalgeek.genasync12.AsyncResponse;
+import com.kosalgeek.genasync12.PostResponseAsyncTask;
+
+import java.util.HashMap;
 
 import my.edu.tarc.kusm_wa14student.communechat.internal.MessageService;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttAPI;
@@ -22,16 +26,18 @@ import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
 import my.edu.tarc.kusm_wa14student.communechat.internal.ServiceGenerator;
 import my.edu.tarc.kusm_wa14student.communechat.model.ACLRule;
 import my.edu.tarc.kusm_wa14student.communechat.model.MqttUser;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
     //Views
     EditText etPassword;
     AutoCompleteTextView etLogin;
     Button btnLogin;
+    Button Signin;
     ProgressBar progressBar;
     private SharedPreferences mPrefs;
 
@@ -51,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.button_login);
         progressBar = (ProgressBar) findViewById(R.id.progressBar_login);
         progressBar.setVisibility(View.INVISIBLE);
+        Signin = (Button)findViewById(R.id.buttonSignin);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +74,13 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             // user object available
                             MqttUser currentUser = new MqttUser(username, password);
+
+                            HashMap<String,String> postData = new HashMap<String,String>();
+                            postData.put("txtUsername", username);
+                            postData.put("txtPassword", password);
+
+                            PostResponseAsyncTask task = new PostResponseAsyncTask(LoginActivity.this, postData, (AsyncResponse) LoginActivity.this);
+                            task.execute("http://10.0.2.2:1234/webservices/testing.php");
 
                             // Save current user to Android local storage
                             // using shared preference (one of the android local storage options)
@@ -111,9 +126,46 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+        Signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap<String,String> postData = new HashMap<String,String>();
+                String username = etLogin.getText().toString();
+                String password = etPassword.getText().toString();
+                postData.put("txtUsername", username);
+                postData.put("txtPassword", password);
+                PostResponseAsyncTask task = new PostResponseAsyncTask(LoginActivity.this, postData, (AsyncResponse) LoginActivity.this);
+                task.execute("http://10.0.2.2:1234/webservices/Login.php");
+            }
+        });
     }
 
-    private class AuthenicationTask extends AsyncTask<Void, Void, Boolean> {
+    @Override
+    public void processFinish(String result) {
+        final String LOG = "LoginActivity";
+
+        MqttUser loginUser = new MqttUser(etLogin.getText().toString(), etPassword.getText().toString());
+
+        Log.d(LOG, result);
+        if(result.equals("success")){
+
+            String userJSON = new Gson().toJson(loginUser);
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            prefsEditor.putString("CURRENT_USER", userJSON);
+            prefsEditor.commit();
+            MqttHelper.subscribe(etLogin.getText().toString());
+            Toast.makeText(this, "Login successfully", Toast.LENGTH_LONG).show();
+            Intent next = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(next);
+        }else {
+            Toast.makeText(this, "Login failed, Please try again", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+    }
+/*    private class AuthenicationTask extends AsyncTask<Void, Void, Boolean> {
 
         String username;
         String password;
@@ -144,4 +196,4 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-}
+}*/

@@ -22,15 +22,15 @@ public final class MqttHelper {
 
     private static final String TAG = "MQTTHelper";
     public static MqttAndroidClient mqttAndroidClient;
-//    public static String defaultTopic = "sensor/mahai";
+    public static String defaultTopic = "admin/test";
     private static MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
     private static DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
 
     //Static MQTT Connection Variables
     private static String clientId = "1000000000";
     private static String serverUri = "tcp://m12.cloudmqtt.com:11969";
-    private static String mqttUsername = "admin";
-    private static String mqttPassword = "12";
+    private static String mqttUsername = "kniwwsgx";
+    private static String mqttPassword = "16taQ24EBtVv";
     private static int QoS = 1;
     private static boolean retain = false;
 
@@ -81,7 +81,7 @@ public final class MqttHelper {
                     public void onSuccess(IMqttToken asyncActionToken) {
                         setDisconnectBufferOption();
                         try {
-                            Log.e("fuck","subscribe connected");
+                            Log.e("subscribe","subscribe connected");
                             mqttAndroidClient.subscribe(subscriptionTopic, QoS);
                         } catch (MqttException e) {
                             Log.w(TAG, "Failed to subscribe to topic: " + subscriptionTopic + ".");
@@ -91,7 +91,7 @@ public final class MqttHelper {
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        Log.e("fuck","onFailure");
+                        Log.e("fail to subscribe","onFailure");
                     }
                 });
             } catch (MqttException e) {
@@ -122,7 +122,7 @@ public final class MqttHelper {
                     public void onSuccess(IMqttToken asyncActionToken) {
                         setDisconnectBufferOption();
                         try {
-                            Log.e("fuck","publish connected");
+                            Log.e("publish","publish connected");
                             mqttAndroidClient.publish(publishTopic, message);
                         } catch (MqttException e) {
                             Log.w(TAG, "Failed to publish messsage: \"" + payload + "\" on topic: " + publishTopic + ".");
@@ -132,6 +132,7 @@ public final class MqttHelper {
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        Log.e("fail to publish","onFailure");
 
                     }
                 });

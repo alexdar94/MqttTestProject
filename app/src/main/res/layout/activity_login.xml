@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:padding="@dimen/activity_horizontal_margin"
+            android:weightSum="1">
 
             <AutoCompleteTextView
                 android:id="@+id/editText_login"
@@ -37,7 +38,14 @@
                 android:id="@+id/button_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action_sign_in" />
+                android:layout_weight="1.03"
+                android:text="@string/signup" />
+
+            <Button
+                android:id="@+id/buttonSignin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_activity_login" />
 
         </LinearLayout>
 

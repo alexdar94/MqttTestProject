@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +30,13 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import my.edu.tarc.kusm_wa14student.communechat.MainActivity;
 import my.edu.tarc.kusm_wa14student.communechat.R;
+import my.edu.tarc.kusm_wa14student.communechat.internal.MessageService;
+import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
 import my.edu.tarc.kusm_wa14student.communechat.model.MqttUser;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -47,6 +52,7 @@ public class ChatFragment extends Fragment {
     private ArrayList<String> list = new ArrayList<>();
     private CustomAdapter adapter;
     private Bundle bundle = new Bundle();
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -95,11 +101,19 @@ public class ChatFragment extends Fragment {
         textViewNoCurrentChat = rootView.findViewById(R.id.textView_no_current_chat);
         linearLayoutChatView = rootView.findViewById(R.id.linearLayout_chatView);
 
+        //String userAMsg = editText.getText().toString();
+
         list = new ArrayList<String>();
-        list.add("test");
+        list.add("abc");
+
+
 
         adapter = new CustomAdapter(list, 0, getActivity());
         chatListView.setAdapter(adapter);
+
+        String currentChatTopic = ((MainActivity)getActivity()).currentChatTopic;
+        MqttHelper.subscribe(currentChatTopic);
+
 
         chatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -109,6 +123,7 @@ public class ChatFragment extends Fragment {
                 Animation onClickAnimation = new AlphaAnimation(0.3f, 1.0f);
                 onClickAnimation.setDuration(2000);
                 view.startAnimation(onClickAnimation);
+
             }
         });
 
@@ -116,6 +131,7 @@ public class ChatFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MqttHelper.publish(((MainActivity)getActivity()).currentChatTopic, editText.getText().toString());
             }});
 
         // Inflate the layout for this fragment

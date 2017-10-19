@@ -24,6 +24,11 @@ public class MqttMessageHandler {
     private static String REQ_SEARCH_USER = "003816";
     private static String ACK_SEARCH_USER = "003817";
     private static String KEEP_ALIVE = "003999";
+
+    private static String ACK_SEND_MESSAGE = "003818";
+    private static String REQ_SEND_MESSAGE = "003819";
+    private static String ACK_CONVERSATION_LIST = "003820";
+    private static String REQ_CONVERSATION_LIST = "003821";
     public MqttCommand mqttCommand;
     private String publish;
     private String received;
@@ -42,7 +47,7 @@ public class MqttMessageHandler {
     }
 
     public void setReceived(String received) {
-        Log.e("fuck","setReceived");
+        Log.e("setReceived","setReceived");
         this.received = received;
         this.decode();
     }

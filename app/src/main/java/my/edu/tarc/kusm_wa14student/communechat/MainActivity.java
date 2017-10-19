@@ -12,6 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -85,14 +88,16 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<MqttUser>(){}.getType();
         currentUser= gson.fromJson(mPrefs.getString("CURRENT_USER", ""), type);
 
-//        MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
+        //MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
 
         // Create new user
-        /*service.createNewUser(new MqttUser("alex","123")).enqueue(new Callback<MqttUser>() {
+        /*service.createNewUser(new MqttUser("lee","123")).enqueue(new Callback<MqttUser>() {
             @Override
             public void onResponse(Call<MqttUser> call, Response<MqttUser> response) {
                 if (response.isSuccessful()) {
                     // user object available
+
+
                 } else {
                     // error response, no access to resource?
                 }
@@ -101,12 +106,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MqttUser> call, Throwable t) {
                 // something went completely south (like no internet connection)
+                Toast.makeText(MainActivity.this, "Internet connection failed", Toast.LENGTH_LONG).show();
                 Log.e("Error createNewUser", t.getMessage());
             }
-        });*/
+        });
 
         // List all ACL rules
-        /*service.listACLRules().enqueue(new Callback<List<ACLRule>>() {
+        service.listACLRules().enqueue(new Callback<List<ACLRule>>() {
             @Override
             public void onResponse(Call<List<ACLRule>> call, Response<List<ACLRule>> response) {
                 if (response.isSuccessful()) {
@@ -122,12 +128,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<ACLRule>> call, Throwable t) {
                 // something went completely south (like no internet connection)
+                Toast.makeText(MainActivity.this, "Internet connection failed", Toast.LENGTH_LONG).show();
                 Log.e("Error createNewUser", t.getMessage());
             }
-        });*/
+        });
 
         // Assign new topic to user, topic cannot have space
-        /*service.createNewACLRule(new ACLRule("newtopic", true, false, "admin")).enqueue(new Callback<ACLRule>() {
+        service.createNewACLRule(new ACLRule("newtopic", true, false, "admin")).enqueue(new Callback<ACLRule>() {
             @Override
             public void onResponse(Call<ACLRule> call, Response<ACLRule> response) {
                 if (response.isSuccessful()) {
@@ -189,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-       /*//Disable ViewPager Swipe
+       //Disable ViewPager Swipe
        viewPager.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -198,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        */
+
         bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

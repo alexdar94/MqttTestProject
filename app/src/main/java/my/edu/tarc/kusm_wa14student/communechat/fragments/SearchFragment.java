@@ -96,18 +96,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
 
                 // Assign topic ("userAuserB") to current user
-                service.createNewACLRule(new ACLRule(currentUsername+resultUsername, true, true, currentUsername)).enqueue(new Callback<ACLRule>() {
+                service.createNewACLRule(new ACLRule(currentUsername+ "/" +resultUsername, true, true, currentUsername)).enqueue(new Callback<ACLRule>() {
                     @Override
                     public void onResponse(Call<ACLRule> call, Response<ACLRule> response) {
                         if (response.isSuccessful()) {
 
                             // Assign topic ("userAuserB") to searched user
-                            service.createNewACLRule(new ACLRule(currentUsername+resultUsername, true, true, resultUsername)).enqueue(new Callback<ACLRule>() {
+                            service.createNewACLRule(new ACLRule(currentUsername + "/" +  resultUsername, true, true, resultUsername)).enqueue(new Callback<ACLRule>() {
                                 @Override
                                 public void onResponse(Call<ACLRule> call, Response<ACLRule> response) {
                                     if (response.isSuccessful()) {
-                                        ((MainActivity)getActivity()).currentChatTopic = currentUsername+resultUsername;
+                                        ((MainActivity)getActivity()).currentChatTopic = currentUsername+ "/" +resultUsername;
                                         ((MainActivity)getActivity()).gotoChatFragment();
+                                        MqttHelper.subscribe(((MainActivity)getActivity()).currentUser.username + "/" + resultUsername);
                                         Toast.makeText(getContext(), "You can start chatting with "+resultUsername+ " now!", Toast.LENGTH_SHORT).show();
                                     } else {
                                         // error response, no access to resource?

@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         //Start service
-//        startService(new Intent(MainActivity.this, MessageService.class));
+        startService(new Intent(MainActivity.this, MessageService.class));
 
         //Initialize views
         viewPager = (ViewPager) findViewById(R.id.viewpager);

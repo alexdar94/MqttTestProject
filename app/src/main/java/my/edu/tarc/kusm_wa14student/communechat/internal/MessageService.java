@@ -59,6 +59,7 @@ public class MessageService extends Service {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     sendMessage(message.toString());
+                    Log.e("messagearrived","sendMessage");
                     Log.e("messagearrived",topic+ ":"+ message.toString());
                     /*if(message.toString().substring(0,9).equals("subscribe")){
                         MqttHelper.subscribe(message.toString().substring(10));
@@ -93,10 +94,9 @@ public class MessageService extends Service {
     private void sendMessage(String message) {
         Log.i(TAG, "Broadcasting message");
         Intent intent = new Intent("MessageEvent");
-
+        Log.e("sendMessage",message);
         MqttMessageHandler handler = new MqttMessageHandler();
         handler.setReceived(message);
-
         if (handler.isReceiving()) {
             intent.putExtra("message", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);

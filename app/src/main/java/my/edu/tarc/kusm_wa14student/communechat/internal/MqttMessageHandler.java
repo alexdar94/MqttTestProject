@@ -47,8 +47,8 @@ public class MqttMessageHandler {
     }
 
     public void setReceived(String received) {
-        Log.e("setReceived","setReceived");
         this.received = received;
+        Log.e("setReceived",received);
         this.decode();
     }
 
@@ -114,6 +114,10 @@ public class MqttMessageHandler {
                 this.mqttCommand = MqttCommand.ACK_SEARCH_USER;
                 break;
             }
+            case "003818": {
+                this.mqttCommand = MqttCommand.ACK_SEND_MESSAGE;
+                break;
+            }
 
 
             default:
@@ -173,6 +177,7 @@ public class MqttMessageHandler {
                 this.mqttCommand == MqttCommand.ACK_CONTACT_LIST ||
                 this.mqttCommand == MqttCommand.ACK_SEARCH_USER ||
                 this.mqttCommand == MqttCommand.ACK_CONTACT_DETAILS ||
+                this.mqttCommand == MqttCommand.ACK_SEND_MESSAGE ||
                 this.mqttCommand == MqttCommand.ACK_USER_PROFILE);
     }
 
@@ -187,6 +192,7 @@ public class MqttMessageHandler {
         ACK_USER_PROFILE,
         REQ_SEARCH_USER,
         ACK_SEARCH_USER,
+        ACK_SEND_MESSAGE,
         KEEP_ALIVE;
     }
 

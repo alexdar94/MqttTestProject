@@ -57,6 +57,7 @@ public class ChatFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
+            Log.e("BroadcastReceiver",message);
             updateList(message);
         }
     };
@@ -81,13 +82,13 @@ public class ChatFragment extends Fragment {
         // Only show current chat topic messages
         if (isVisibleToUser) {
             String currentChatTopic = ((MainActivity)getActivity()).currentChatTopic;
-            if (currentChatTopic.equals("")){
+            /*if (currentChatTopic.equals("")){
                 linearLayoutChatView.setVisibility(View.INVISIBLE);
                 textViewNoCurrentChat.setVisibility(View.VISIBLE);
             } else {
                 linearLayoutChatView.setVisibility(View.VISIBLE);
                 textViewNoCurrentChat.setVisibility(View.INVISIBLE);
-            }
+            }*/
         }
     }
 

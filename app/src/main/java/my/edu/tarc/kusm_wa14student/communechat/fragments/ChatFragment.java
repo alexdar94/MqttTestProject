@@ -104,7 +104,7 @@ public class ChatFragment extends Fragment {
         //String userAMsg = editText.getText().toString();
 
         list = new ArrayList<String>();
-        list.add("abc");
+        list.add("abdddd");
 
 
 

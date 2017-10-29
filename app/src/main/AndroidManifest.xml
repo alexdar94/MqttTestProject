@@ -24,7 +24,6 @@
         <activity
             android:name=".ProfileActivity"
             android:theme="@style/AppTheme" />
-
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,12 +32,14 @@
             </intent-filter>
         </activity>
 
-
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service
             android:name=".internal.MessageService"
             android:exported="false" />
 
+        <activity
+            android:name=".chatActivity"
+            android:label="@string/title_activity_conversation"></activity>
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CommuneChat.iml" filepath="$PROJECT_DIR$/CommuneChat.iml" />
+      <module fileurl="file://C:\Users\silen\Desktop\MqttTestProject\CommuneChat.iml" filepath="C:\Users\silen\Desktop\MqttTestProject\CommuneChat.iml" />
       <module fileurl="file://$PROJECT_DIR$/MqttTestProject.iml" filepath="$PROJECT_DIR$/MqttTestProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

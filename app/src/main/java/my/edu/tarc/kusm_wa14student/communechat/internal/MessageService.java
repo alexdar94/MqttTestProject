@@ -61,11 +61,7 @@ public class MessageService extends Service {
                     sendMessage(message.toString());
                     Log.e("messagearrived","sendMessage");
                     Log.e("messagearrived",topic+ ":"+ message.toString());
-                    /*if(message.toString().substring(0,9).equals("subscribe")){
-                        MqttHelper.subscribe(message.toString().substring(10));
-                    }else{
 
-                    }*/
                 }
 
                 @Override
@@ -101,6 +97,17 @@ public class MessageService extends Service {
             intent.putExtra("message", message);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
+        /*if(message.substring(0,6) == "003823"){
+            intent.putExtra("ACK_SUBSCRIBE_NEW_TOPIC", message);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }else if(message.substring(0,6) == "003818"){
+            intent.putExtra("ACK_SEND_MESSAGE", message);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }*/
+
+
+
+
     }
 
 }

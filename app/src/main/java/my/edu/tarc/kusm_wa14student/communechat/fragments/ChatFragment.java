@@ -5,60 +5,69 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonObject;
 
-import java.lang.reflect.Type;
-import java.text.MessageFormat;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import my.edu.tarc.kusm_wa14student.communechat.MainActivity;
 import my.edu.tarc.kusm_wa14student.communechat.R;
-import my.edu.tarc.kusm_wa14student.communechat.internal.MessageService;
+import my.edu.tarc.kusm_wa14student.communechat.adapter.ConversationAdapter;
+import my.edu.tarc.kusm_wa14student.communechat.adapter.ConversationAdapter2;
+import my.edu.tarc.kusm_wa14student.communechat.internal.JSONParser;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
-import my.edu.tarc.kusm_wa14student.communechat.model.MqttUser;
+import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
 
-import static android.content.Context.MODE_PRIVATE;
+public class ChatFragment extends Fragment  {
 
-public class ChatFragment extends Fragment {
-
-    private ListView chatListView;
+    private ListView conversationListView;
     private EditText editText;
     private Button btn;
     private TextView textViewNoCurrentChat;
     private LinearLayout linearLayoutChatView;
     SharedPreferences mPrefs;
     private ArrayList<String> list = new ArrayList<>();
-    private CustomAdapter adapter;
+    private ConversationAdapter2 adapter;
     private Bundle bundle = new Bundle();
+    //UpdateListTask task = new UpdateListTask();
+    private static final String TAG_conversation_name = "conversation_name";
+    String conversation_name;
+
+
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             Log.e("BroadcastReceiver",message);
+            new DisplayConversationTask().execute(message);
             updateList(message);
+            //task.execute(message);
         }
     };
 
@@ -69,11 +78,12 @@ public class ChatFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
                 mMessageReceiver, new IntentFilter("MessageEvent"));
     }
 
-    @Override
+    /*@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
@@ -82,41 +92,38 @@ public class ChatFragment extends Fragment {
         // Only show current chat topic messages
         if (isVisibleToUser) {
             String currentChatTopic = ((MainActivity)getActivity()).currentChatTopic;
-            /*if (currentChatTopic.equals("")){
+            if (currentChatTopic.equals("")){
                 linearLayoutChatView.setVisibility(View.INVISIBLE);
                 textViewNoCurrentChat.setVisibility(View.VISIBLE);
             } else {
                 linearLayoutChatView.setVisibility(View.VISIBLE);
                 textViewNoCurrentChat.setVisibility(View.INVISIBLE);
-            }*/
+            }
         }
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-        chatListView = (ListView) rootView.findViewById(R.id.listView_chat);
-        editText = (EditText) rootView.findViewById(R.id.editTextChat);
-        btn = (Button) rootView.findViewById(R.id.button);
+        conversationListView = (ListView) rootView.findViewById(R.id.listView_conversation);
+        //editText = (EditText) rootView.findViewById(R.id.editTextChat);
+        //btn = (Button) rootView.findViewById(R.id.button);
         textViewNoCurrentChat = rootView.findViewById(R.id.textView_no_current_chat);
         linearLayoutChatView = rootView.findViewById(R.id.linearLayout_chatView);
 
-        //String userAMsg = editText.getText().toString();
 
         list = new ArrayList<String>();
-        list.add("abdddd");
+        list.add(conversation_name);
 
-
-
-        adapter = new CustomAdapter(list, 0, getActivity());
-        chatListView.setAdapter(adapter);
+        adapter = new ConversationAdapter2(getActivity().getApplicationContext(), R.layout.fragment_chat, list);
+        conversationListView.setAdapter(adapter);
 
         String currentChatTopic = ((MainActivity)getActivity()).currentChatTopic;
         MqttHelper.subscribe(currentChatTopic);
 
 
-        chatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        conversationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -128,13 +135,6 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MqttHelper.publish(((MainActivity)getActivity()).currentChatTopic, editText.getText().toString());
-            }});
-
         // Inflate the layout for this fragment
         return rootView;
         }
@@ -144,52 +144,78 @@ public class ChatFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    private static class ViewHolder {
-        TextView tvName;
-        TextView tvStatus;
+
+
+    public static class ViewHolder {
+        public TextView tvName;
+        public TextView tvStatus;
         //ImageView info;
     }
 
-    public class CustomAdapter extends ArrayAdapter<String> {
-        int lastPosition = -1;
+    private class DisplayConversationTask extends AsyncTask<String, Void, JSONObject> {
+        String url = "http://localhost:1234/webservices/get_conversation.php";
 
-        Context mContext;
+        @Override
+        protected JSONObject doInBackground(String... strings) {
 
-        public CustomAdapter(ArrayList<String> txt, int resources, Context context) {
-            super(context, resources, txt);
-            this.mContext=context;
+            try{
+                JSONObject conversation = new JSONObject();
+                String conversationid = conversation.getString("conversation_id");
+                String conversationname = conversation.getString("conversation_name");
+                String createdAt = conversation.getString("created_at");
+                String type = conversation.getString("type");
+
+
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("conversationid", conversationid));
+                params.add(new BasicNameValuePair("conversationname", conversationname));
+                params.add(new BasicNameValuePair("createdAt", createdAt));
+                params.add(new BasicNameValuePair("type", type));
+
+
+
+                JSONParser jsonParser = new JSONParser();
+                //Getting JSON from URL
+                JSONObject json = jsonParser.getJSONFromUrl(url);
+
+                return json;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            String txt = getItem(position);
-            final View result;
-            // Check if an existing view is being reused, otherwise inflate the view
-            if (convertView == null) {
-                viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_frame, parent, false);
-                viewHolder.tvName = (TextView) convertView.findViewById(R.id.contact_frame_name);
-                viewHolder.tvStatus  = (TextView) convertView.findViewById(R.id.contact_frame_status);
-                result = convertView;
-                convertView.setTag(viewHolder);
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(JsonObject json) {
+            try{
+                JsonObject conversation = new JsonObject();
+
+                //Getting JSON Array
+                conversationname = jsonObject.getJSONArray(TAG_conversation_name);
+                JSONObject c = conversationname.getJSONObject(0);
+
+                // Storing  JSON item in a Variable
+                conversation_name = c.getString(TAG_conversation_name);
+
+            }catch (Exception e){
+
             }
-            else {
-                viewHolder = (ViewHolder) convertView.getTag();
-                result = convertView;
-            }
 
-            Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in);
-                // Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
-            result.startAnimation(animation);
 
-            lastPosition = position;
 
-            viewHolder.tvName.setText("User");
-            viewHolder.tvStatus.setText(txt.toString());
 
-            return convertView;
+
+
+        }
         }
     }
 
-}
+
+
+

@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                             postData.put("txtPassword", password);
 
                             PostResponseAsyncTask task = new PostResponseAsyncTask(LoginActivity.this, postData, (AsyncResponse) LoginActivity.this);
-                            task.execute("http://10.0.2.2:1234/webservices/testing.php");
+                            task.execute("http://10.0.2.2:1234/webservices/register.php");
 
                             // Save current user to Android local storage
                             // using shared preference (one of the android local storage options)

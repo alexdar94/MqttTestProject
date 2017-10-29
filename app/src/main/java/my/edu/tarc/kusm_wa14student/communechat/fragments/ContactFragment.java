@@ -168,7 +168,7 @@ public class ContactFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
-            Log.e("fuck","onPreExecute");
+            Log.e("onPreExecute","onPreExecute");
             super.onPreExecute();
         }
 
@@ -177,7 +177,7 @@ public class ContactFragment extends Fragment {
 
             if (!strings[0].isEmpty()) {
                 MqttMessageHandler handler = new MqttMessageHandler();
-                Log.e("fuck","doInBackground");
+                Log.e("doInBackground","doInBackground");
                 handler.setReceived(strings[0]);
                 if (handler.mqttCommand != null) {
                     switch (handler.mqttCommand) {

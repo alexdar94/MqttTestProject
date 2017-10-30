@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -55,7 +56,7 @@ public class ChatFragment extends Fragment  {
     private ConversationAdapter2 adapter;
     private Bundle bundle = new Bundle();
     //UpdateListTask task = new UpdateListTask();
-    private static final String TAG_conversation_name = "conversation_name";
+    //private static final String TAG_conversation_name = "conversation_name";
     String conversation_name;
 
 
@@ -152,11 +153,11 @@ public class ChatFragment extends Fragment  {
         //ImageView info;
     }
 
-    private class DisplayConversationTask extends AsyncTask<String, Void, JSONObject> {
+    private class DisplayConversationTask extends AsyncTask<String, Void, String> {
         String url = "http://localhost:1234/webservices/get_conversation.php";
 
         @Override
-        protected JSONObject doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
 
             try{
                 JSONObject conversation = new JSONObject();
@@ -176,13 +177,15 @@ public class ChatFragment extends Fragment  {
 
                 JSONParser jsonParser = new JSONParser();
                 //Getting JSON from URL
-                JSONObject json = jsonParser.getJSONFromUrl(url);
+                //JSONObject json = jsonParser.getJSONFromUrl(url);
 
-                return json;
+                JsonObject json = jsonParser.requestHttp();
+
+                return "success";
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+            return "error";
 
         }
 
@@ -192,28 +195,17 @@ public class ChatFragment extends Fragment  {
         }
 
         @Override
-        protected void onPostExecute(JsonObject json) {
-            try{
-                JsonObject conversation = new JsonObject();
+        protected void onPostExecute(String result) {
+            if(result.equals("success")){
 
-                //Getting JSON Array
-                conversationname = jsonObject.getJSONArray(TAG_conversation_name);
-                JSONObject c = conversationname.getJSONObject(0);
 
-                // Storing  JSON item in a Variable
-                conversation_name = c.getString(TAG_conversation_name);
 
-            }catch (Exception e){
-
+            }else if(result.equals("error")){
+                Toast.makeText(getContext(), "Fail to load", Toast.LENGTH_LONG).show();
             }
 
-
-
-
-
-
         }
-        }
+    }
     }
 
 

@@ -1,5 +1,7 @@
 package my.edu.tarc.kusm_wa14student.communechat.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,13 +28,29 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntityHC4;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +79,7 @@ public class ChatFragment extends Fragment  {
 
 
 
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -68,6 +87,8 @@ public class ChatFragment extends Fragment  {
             Log.e("BroadcastReceiver",message);
             new DisplayConversationTask().execute(message);
             updateList(message);
+            new DisplayConversationTask2().execute();
+
             //task.execute(message);
         }
     };
@@ -115,9 +136,9 @@ public class ChatFragment extends Fragment  {
 
 
         list = new ArrayList<String>();
-        list.add(conversation_name);
+        list.add("ABC");
 
-        adapter = new ConversationAdapter2(getActivity().getApplicationContext(), R.layout.fragment_chat, list);
+        adapter = new ConversationAdapter(list, 0, getActivity());
         conversationListView.setAdapter(adapter);
 
         String currentChatTopic = ((MainActivity)getActivity()).currentChatTopic;
@@ -153,7 +174,7 @@ public class ChatFragment extends Fragment  {
         //ImageView info;
     }
 
-    private class DisplayConversationTask extends AsyncTask<String, Void, String> {
+    private class DisplayConversationTask extends AsyncTask<String, String, String> {
         String url = "http://localhost:1234/webservices/get_conversation.php";
 
         @Override
@@ -179,7 +200,7 @@ public class ChatFragment extends Fragment  {
                 //Getting JSON from URL
                 //JSONObject json = jsonParser.getJSONFromUrl(url);
 
-                JsonObject json = jsonParser.requestHttp();
+                //JsonObject json = jsonParser.requestHttp();
 
                 return "success";
             } catch (Exception e) {
@@ -207,6 +228,8 @@ public class ChatFragment extends Fragment  {
         }
     }
     }
+
+
 
 
 

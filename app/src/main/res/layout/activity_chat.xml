@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="my.edu.tarc.kusm_wa14student.communechat.fragments.ChatFragment">
+
+    <TextView
+        android:id="@+id/textView_no_current_chat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No chat selected, please search for a user to start chating"
+        android:textSize="28sp"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_chatView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <ListView
+            android:id="@+id/listView_chat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?listPreferredItemHeight"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextChat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="8"
+                android:ems="10"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Send" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

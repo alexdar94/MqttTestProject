@@ -138,7 +138,7 @@ public class ChatFragment extends Fragment  {
         list = new ArrayList<String>();
         list.add("ABC");
 
-        adapter = new ConversationAdapter(list, 0, getActivity());
+        //adapter = new ConversationAdapter(list, 0, getActivity());
         conversationListView.setAdapter(adapter);
 
         String currentChatTopic = ((MainActivity)getActivity()).currentChatTopic;

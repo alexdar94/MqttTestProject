@@ -44,5 +44,6 @@ dependencies {
     compile files('libs/GenAsync.1.2.jar')
     compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
 
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
 }

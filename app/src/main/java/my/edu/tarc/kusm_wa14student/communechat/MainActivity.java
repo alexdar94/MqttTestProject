@@ -26,6 +26,7 @@ import java.util.List;
 import my.edu.tarc.kusm_wa14student.communechat.adapter.ViewPagerAdapter;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.ChatFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.ContactFragment;
+import my.edu.tarc.kusm_wa14student.communechat.fragments.ConversationFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.SearchFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.UserFragment;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MessageService;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment;
     private UserFragment userFragment;
     private ChatFragment chatFragment;
+    private ConversationFragment conversationFragment;
 
     private BroadcastReceiver mMessageReceiver;
 
@@ -163,9 +165,11 @@ public class MainActivity extends AppCompatActivity {
         chatFragment = new ChatFragment();
         searchFragment = new SearchFragment();
         userFragment = new UserFragment();
+        conversationFragment = new ConversationFragment();
 
         adapter.addFragment(contactFragment);
-        adapter.addFragment(chatFragment);
+//        adapter.addFragment(chatFragment);
+        adapter.addFragment(conversationFragment);
         adapter.addFragment(searchFragment);
         adapter.addFragment(userFragment);
 

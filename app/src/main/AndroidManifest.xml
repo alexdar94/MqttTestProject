@@ -37,9 +37,7 @@
             android:name=".internal.MessageService"
             android:exported="false" />
 
-        <activity
-            android:name=".chatActivity"
-            android:label="@string/title_activity_conversation"></activity>
+        <activity android:name=".ChatActivity" />
     </application>
 
 </manifest>

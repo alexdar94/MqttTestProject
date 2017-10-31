@@ -7,17 +7,28 @@ import java.util.Date;
  */
 
 public class Conversation {
-    private String conversation_id;
-    private String conversation_name;
-    private int role;
-    private long created_at;
+    public String conversation_id;
+    public String conversation_name;
+    public int role;
+    public long created_at;
+    public String conversation_pic_url;
+    public String last_message;
 
-    public Conversation() {
+    /*public Conversation() {
         this.conversation_id = conversation_id;
         this.conversation_name = conversation_name;
         this.role = role;
 
         created_at = new Date().getDate();
+    }*/
+
+    public Conversation(String conversation_id, String conversation_name, int role, long created_at, String conversation_pic_url, String last_message) {
+        this.conversation_id = conversation_id;
+        this.conversation_name = conversation_name;
+        this.role = role;
+        this.created_at = created_at;
+        this.conversation_pic_url = conversation_pic_url;
+        this.last_message = last_message;
     }
 
     public String getConversation_id() {

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageview_conversation_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@android:drawable/stat_sys_phone_call_forward"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/textview_conversation_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imageview_conversation_pic"
+        android:layout_toRightOf="@id/imageview_conversation_pic"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Conversation name"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:id="@+id/textView_latest_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="Latest message"
+        android:textSize="18sp"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/textview_conversation_name" />
+</RelativeLayout>

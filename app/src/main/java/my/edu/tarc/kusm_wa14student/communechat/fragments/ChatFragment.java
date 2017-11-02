@@ -139,7 +139,7 @@ public class ChatFragment extends Fragment  {
         list.add("ABC");
 
         //adapter = new ConversationAdapter(list, 0, getActivity());
-        conversationListView.setAdapter(adapter);
+        //conversationListView.setAdapter(adapter);
 
         String currentChatTopic = ((MainActivity)getActivity()).currentChatTopic;
         MqttHelper.subscribe(currentChatTopic);

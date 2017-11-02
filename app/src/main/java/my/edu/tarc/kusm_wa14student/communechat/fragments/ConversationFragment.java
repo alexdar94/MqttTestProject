@@ -20,11 +20,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 01/11/2017.
- */
 
-public class ConversationFragment extends Fragment {
+public class ConversationFragment extends Fragment  {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +33,25 @@ public class ConversationFragment extends Fragment {
 
         // Convert ur conversation JSON into Conversation java object
         // Add them into conversations
-        // Then u will see the list of conversations d sohai
+        // Then u will see the list of conversations
+
+        DisplayConversationTask2 abc = new DisplayConversationTask2();
+        abc.execute();
+
+
         List<Conversation> conversations = new ArrayList<>();
-        conversations.add(new Conversation("fuck","Hatano Yui", -1, -1, "https://upload.wikimedia.org/wikipedia/commons/0/0c/160528_Hatano_Yui_11m4s.jpg" ,"fuck"));
-        conversations.add(new Conversation("fuck","S1 Aoi", -1, -1, "https://i.warosu.org/data/jp/img/0137/87/1437578483433.jpg" ,"fuck"));
-        conversations.add(new Conversation("fuck","Tsukasa Aoi", -1, -1, "https://upload.wikimedia.org/wikipedia/commons/0/0e/%EC%95%84%EC%98%A4%EC%9D%B4%EC%B8%A0%EC%B9%B4%EC%82%AC%28Aoi_Tsukasa%29_%EA%B5%AD%EB%82%B4_%ED%8C%AC%EB%AF%B8%ED%8C%85_1.jpg" ,"fuck"));
-        conversations.add(new Conversation("fuck","Sora Aoi", -1, -1, "http://2.bp.blogspot.com/_PhwWw_j2UkE/St64B_y-vWI/AAAAAAAAAVk/zlZFu5tfjjM/s400/Sora+Aoi.jpg" ,"fuck"));
-        conversations.add(new Conversation("fuck","China Matsuoka", -1, -1, "https://i.pinimg.com/736x/12/cd/08/12cd083aaae6a4855083765d085154a2.jpg" ,"fuck"));
-        conversations.add(new Conversation("fuck","S1 Aoi", -1, -1, "https://i.warosu.org/data/jp/img/0137/87/1437578483433.jpg" ,"fuck"));
+        conversations.add(new Conversation("abc","gg", -1, "", "" ,"https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg", "erer"));
+        conversations.add(new Conversation("abc","hh", -1, "", "" ,"https://www.idolator.com/wp-content/uploads/sites/10/2015/10/adele-hello.jpg", "erer"));
+        conversations.add(new Conversation("abc","ii", -1, "", "" ,"https://static.pexels.com/photos/54632/cat-animal-eyes-grey-54632.jpeg", "rer"));
+        conversations.add(new Conversation("abc","pp", -1, "", "" ,"https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg", "qwe"));
+        conversations.add(new Conversation("abc","Casd", -1, "", "" ,"https://static.pexels.com/photos/54632/cat-animal-eyes-grey-54632.jpeg", "asd"));
+        conversations.add(new Conversation("abc","ee", -1, "", "" ,"https://www.idolator.com/wp-content/uploads/sites/10/2015/10/adele-hello.jpg", "abc"));
+
+
+
+
+
+
 
         RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView_conversation);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getContext());
@@ -53,4 +61,7 @@ public class ConversationFragment extends Fragment {
         mRecyclerView.setAdapter(adapter);
         return view;
     }
+
+
+
 }

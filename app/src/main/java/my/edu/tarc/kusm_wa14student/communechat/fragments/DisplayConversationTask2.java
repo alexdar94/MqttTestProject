@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,17 +24,23 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.List;
 
+import my.edu.tarc.kusm_wa14student.communechat.adapter.ConversationAdapter2;
 import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
 
 
-public class DisplayConversationTask2 extends AsyncTask<String, String, Void> {
+public class DisplayConversationTask2 extends AsyncTask<String, String, String> {
     HttpURLConnection connection = null;
     BufferedReader reader = null;
     InputStream inputStream = null;
     String result;
     StringBuffer finalBufferData;
+    ConversationAdapter2 adapter;
 
+    public DisplayConversationTask2(ConversationAdapter2 adapter){
+        this.adapter = adapter;
+    }
 
     @Override
     protected void onPreExecute() {
@@ -42,7 +49,7 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, Void> {
 
     @SuppressLint("LongLogTag")
     @Override
-    protected Void doInBackground(String... params) {
+    protected String doInBackground(String... params) {
 
         String url_select = "http://10.0.2.2:1234/webservices/get_conversation.php";
 
@@ -58,9 +65,10 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, Void> {
             httpPost.setEntity(new UrlEncodedFormEntity(param));
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-
             // Read content & Log
             inputStream = httpEntity.getContent();
+            Log.e("fuck", inputStream.toString());
+            return EntityUtils.toString(httpResponse.getEntity());
         } catch (UnsupportedEncodingException e1) {
             Log.e("UnsupportedEncodingException", e1.toString());
             e1.printStackTrace();
@@ -74,6 +82,7 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, Void> {
             Log.e("IOException", e4.toString());
             e4.printStackTrace();
         }
+
         // Convert response to string using String Builder
         try {
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
@@ -86,7 +95,7 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, Void> {
 
             inputStream.close();
             result = sBuilder.toString();
-
+            return result;
         } catch (Exception e) {
             Log.e("StringBuilding & BufferedReader", "Error converting result " + e.toString());
         }
@@ -95,9 +104,10 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void result) {
+    protected void onPostExecute(String result) {
         //Parse Json Data
 
+        List<Conversation> conversations = new ArrayList<>();
         try{
             JSONArray jArray = new JSONArray(result);
             for(int i = 0; i<jArray.length(); i++) {
@@ -108,12 +118,14 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, Void> {
                 String user_id = jObject.getString("user_id");
                 int role = jObject.getInt("role");
 
-                Conversation data = new Conversation(conversationid, conversationname, role, createdAt, user_id, "", "");
-                //Log.e("success",conversationid + conversationname + role + createdAt + user_id + "" + "");
-                Log.e("success", result.toString());
+                Conversation data = new Conversation(conversationid, conversationname, role, createdAt, user_id, "https://www.idolator.com/wp-content/uploads/sites/10/2015/10/adele-hello.jpg", "welcome");
+                Log.e("success",conversationid + conversationname + role + createdAt + user_id + "" + "");
+
+                conversations.add(data);
 
             }
-
+            adapter.setConversations(conversations);
+            adapter.notifyDataSetChanged();
         }catch (JSONException e){
             Log.e("JSONException", "Error: " + e.toString());
 

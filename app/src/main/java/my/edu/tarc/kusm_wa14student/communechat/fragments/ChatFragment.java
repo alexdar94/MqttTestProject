@@ -87,9 +87,7 @@ public class ChatFragment extends Fragment  {
             Log.e("BroadcastReceiver",message);
             new DisplayConversationTask().execute(message);
             updateList(message);
-            new DisplayConversationTask2().execute();
 
-            //task.execute(message);
         }
     };
 

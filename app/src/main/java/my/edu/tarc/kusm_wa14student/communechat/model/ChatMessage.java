@@ -10,13 +10,14 @@ public class ChatMessage {
     private int messageid;
     private String messageText;
     private String messageUser;
-    private long messageTime;
 
-    public ChatMessage() {
+    /*public ChatMessage() {
+    }*/
+
+    public ChatMessage(int messageid, String messageText, String messageUser) {
         this.messageid = messageid;
         this.messageText = messageText;
         this.messageUser = messageUser;
-        messageTime = new Date().getTime();
     }
 
     public int getMessageid() {
@@ -43,11 +44,4 @@ public class ChatMessage {
         this.messageUser = messageUser;
     }
 
-    public long getMessageTime() {
-        return messageTime;
-    }
-
-    public void setMessageTime(long messageTime) {
-        this.messageTime = messageTime;
-    }
 }

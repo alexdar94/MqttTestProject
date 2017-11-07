@@ -42,6 +42,10 @@ public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapt
         this.conversations = conversations;
     }
 
+    public void setConversations(List<Conversation> conversations) {
+        this.conversations = conversations;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView conversationName, lastMessage;
         ImageView conversationPic;

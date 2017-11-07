@@ -40,6 +40,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     Button Signin;
     ProgressBar progressBar;
     private SharedPreferences mPrefs;
+    static String username;
+    static String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +60,15 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         progressBar = (ProgressBar) findViewById(R.id.progressBar_login);
         progressBar.setVisibility(View.INVISIBLE);
         Signin = (Button)findViewById(R.id.buttonSignin);
+        username = etLogin.getText().toString();
+        password = etPassword.getText().toString();
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String username = etLogin.getText().toString();
-                final String password = etPassword.getText().toString();
+                //final String username = etLogin.getText().toString();
+                //final String password = etPassword.getText().toString();
                 
                 final MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
                 // Register user
@@ -130,12 +134,13 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             @Override
             public void onClick(View view) {
                 HashMap<String,String> postData = new HashMap<String,String>();
-                String username = etLogin.getText().toString();
-                String password = etPassword.getText().toString();
+                username = etLogin.getText().toString();
+                password = etPassword.getText().toString();
                 postData.put("txtUsername", username);
                 postData.put("txtPassword", password);
                 PostResponseAsyncTask task = new PostResponseAsyncTask(LoginActivity.this, postData, (AsyncResponse) LoginActivity.this);
                 task.execute("http://10.0.2.2:1234/webservices/Login.php");
+                Log.e("Checking", username);
             }
         });
     }

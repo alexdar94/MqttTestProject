@@ -205,7 +205,8 @@ public class MqttMessageHandler {
             String data = received;
 
             while(!data.isEmpty()){
-                ChatMessage chatmessage = new ChatMessage();
+
+                ChatMessage chatmessage = null;
 
                 chatmessage.setMessageid(Integer.parseInt(data.substring(0,10)));
                 data = data.substring(10);
@@ -215,15 +216,12 @@ public class MqttMessageHandler {
                 chatmessage.setMessageUser(data.substring(0, temp));
                 data = data.substring(temp);
 
-
                 temp = Integer.parseInt(data.substring(0,60));
                 data = data.substring(60);
                 chatmessage.setMessageText(data.substring(0, temp));
                 data = data.substring(temp);
 
-
                 chatMessages.add(chatmessage);
-
             }
             return chatMessages;
         }

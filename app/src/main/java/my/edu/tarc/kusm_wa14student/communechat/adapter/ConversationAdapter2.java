@@ -18,6 +18,7 @@ import java.util.List;
 
 import my.edu.tarc.kusm_wa14student.communechat.ChatActivity;
 import my.edu.tarc.kusm_wa14student.communechat.R;
+import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
 import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
 
 /**
@@ -35,7 +36,7 @@ import com.squareup.picasso.Picasso;
 
 public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapter2.ViewHolder> {
     private Context context;
-    private List<Conversation> conversations;
+    private static List<Conversation> conversations;
 
     public ConversationAdapter2(Context context, List<Conversation> conversations) {
         this.context = context;
@@ -85,4 +86,6 @@ public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapt
     public int getItemCount() {
         return conversations.size();
     }
+
+
 }

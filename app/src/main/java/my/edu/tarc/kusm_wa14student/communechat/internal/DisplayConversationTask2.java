@@ -1,4 +1,4 @@
-package my.edu.tarc.kusm_wa14student.communechat.fragments;
+package my.edu.tarc.kusm_wa14student.communechat.internal;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -37,6 +37,12 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, String> 
     String result;
     StringBuffer finalBufferData;
     ConversationAdapter2 adapter;
+    public static String conversationid;
+    String conversationname;
+    String createdAt;
+    public static String user_id;
+    int role;
+
 
     public DisplayConversationTask2(ConversationAdapter2 adapter){
         this.adapter = adapter;
@@ -112,11 +118,11 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, String> 
             JSONArray jArray = new JSONArray(result);
             for(int i = 0; i<jArray.length(); i++) {
                 JSONObject jObject = jArray.getJSONObject(i);
-                String conversationid = jObject.getString("conversation_id");
-                String conversationname = jObject.getString("conversation_name");
-                String createdAt = jObject.getString("created_at");
-                String user_id = jObject.getString("user_id");
-                int role = jObject.getInt("role");
+                conversationid = jObject.getString("conversation_id");
+                conversationname = jObject.getString("conversation_name");
+                createdAt = jObject.getString("created_at");
+                user_id = jObject.getString("user_id");
+                role = jObject.getInt("role");
 
                 Conversation data = new Conversation(conversationid, conversationname, role, createdAt, user_id, "https://www.idolator.com/wp-content/uploads/sites/10/2015/10/adele-hello.jpg", "welcome");
                 Log.e("success",conversationid + conversationname + role + createdAt + user_id + "" + "");

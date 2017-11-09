@@ -1,18 +1,15 @@
 package my.edu.tarc.kusm_wa14student.communechat.fragments;
 
-import my.edu.tarc.kusm_wa14student.communechat.MainActivity;
 import my.edu.tarc.kusm_wa14student.communechat.R;
 import my.edu.tarc.kusm_wa14student.communechat.adapter.ConversationAdapter2;
+import my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2;
 import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
 
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

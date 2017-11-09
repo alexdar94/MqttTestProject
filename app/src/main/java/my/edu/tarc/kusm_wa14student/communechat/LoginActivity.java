@@ -170,35 +170,4 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
 
     }
-/*    private class AuthenicationTask extends AsyncTask<Void, Void, Boolean> {
 
-        String username;
-        String password;
-
-        private AuthenicationTask(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            boolean result = false;
-
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            progressBar.setVisibility(View.GONE);
-        }
-    }
-
-}*/

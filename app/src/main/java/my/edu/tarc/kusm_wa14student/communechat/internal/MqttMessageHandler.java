@@ -199,7 +199,7 @@ public class MqttMessageHandler {
 
     public ArrayList<ChatMessage> getChatMessageList(){
         if(mqttCommand == MqttCommand.ACK_RECEIVE_MESSAGE){
-            received = received.substring(110);
+            received = received.substring(80);
             ArrayList<ChatMessage> chatMessages = new ArrayList<>();
             int temp = 0;
             String data = received;
@@ -211,8 +211,8 @@ public class MqttMessageHandler {
                 chatmessage.setMessageid(Integer.parseInt(data.substring(0,10)));
                 data = data.substring(10);
 
-                temp = Integer.parseInt(data.substring(0,40));
-                data = data.substring(40);
+                temp = Integer.parseInt(data.substring(0,10));
+                data = data.substring(10);
                 chatmessage.setMessageUser(data.substring(0, temp));
                 data = data.substring(temp);
 

@@ -18,18 +18,31 @@ import com.google.gson.Gson;
 import com.kosalgeek.genasync12.AsyncResponse;
 import com.kosalgeek.genasync12.PostResponseAsyncTask;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import my.edu.tarc.kusm_wa14student.communechat.internal.MessageService;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttAPI;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
+import my.edu.tarc.kusm_wa14student.communechat.internal.PhpAPI;
 import my.edu.tarc.kusm_wa14student.communechat.internal.ServiceGenerator;
 import my.edu.tarc.kusm_wa14student.communechat.model.ACLRule;
+import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
 import my.edu.tarc.kusm_wa14student.communechat.model.MqttUser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -59,17 +72,18 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         btnLogin = (Button) findViewById(R.id.button_login);
         progressBar = (ProgressBar) findViewById(R.id.progressBar_login);
         progressBar.setVisibility(View.INVISIBLE);
-        Signin = (Button)findViewById(R.id.buttonSignin);
+        Signin = (Button) findViewById(R.id.buttonSignin);
         username = etLogin.getText().toString();
         password = etPassword.getText().toString();
 
+        new abcTask().execute();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //final String username = etLogin.getText().toString();
                 //final String password = etPassword.getText().toString();
-                
+
                 final MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
                 // Register user
                 service.createNewUser(new MqttUser(username, password)).enqueue(new Callback<MqttUser>() {
@@ -79,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                             // user object available
                             MqttUser currentUser = new MqttUser(username, password);
 
-                            HashMap<String,String> postData = new HashMap<String,String>();
+                            HashMap<String, String> postData = new HashMap<String, String>();
                             postData.put("txtUsername", username);
                             postData.put("txtPassword", password);
 
@@ -133,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         Signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<String,String> postData = new HashMap<String,String>();
+                HashMap<String, String> postData = new HashMap<String, String>();
                 username = etLogin.getText().toString();
                 password = etPassword.getText().toString();
                 postData.put("txtUsername", username);
@@ -152,7 +166,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         MqttUser loginUser = new MqttUser(etLogin.getText().toString(), etPassword.getText().toString());
 
         Log.d(LOG, result);
-        if(result.equals("success")){
+        if (result.equals("success")) {
 
             String userJSON = new Gson().toJson(loginUser);
             SharedPreferences.Editor prefsEditor = mPrefs.edit();
@@ -162,12 +176,36 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             Toast.makeText(this, "Login successfully", Toast.LENGTH_LONG).show();
             Intent next = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(next);
-        }else {
+        } else {
             Toast.makeText(this, "Login failed, Please try again", Toast.LENGTH_LONG).show();
         }
     }
 
+    private class abcTask extends AsyncTask<Void, Void, Void> {
+        private void postData(String conversation_name) {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://10.0.2.2:1234/webservices/insert_conversation.php");
+
+            try {
+                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+
+                nameValuePairs.add(new BasicNameValuePair("conversation_name", conversation_name));
+                //nameValuePairs.add(new BasicNameValuePair("sender_id", created_at));
+                //nameValuePairs.add(new BasicNameValuePair("conversation_id", conversation_id));
 
 
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                HttpResponse response = httpclient.execute(httppost);
+            } catch (Exception e) {
+                Log.e("log_tag", "Error:  " + e.toString());
+            }
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            postData("hao");
+            return null;
+        }
     }
-
+}

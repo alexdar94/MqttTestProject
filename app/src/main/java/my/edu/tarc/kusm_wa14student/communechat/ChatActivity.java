@@ -145,16 +145,10 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private class insertMessageTask extends AsyncTask<Void, Void, Boolean> {
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
-        InputStream inputStream = null;
-
-
 
         private void postData(String messageText, String sender_id, String conversation_id ){
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://10.0.2.2:1234/webservices/insert_msg.php");
-
 
             try {
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
@@ -166,6 +160,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
+
 
             }
             catch(Exception e)

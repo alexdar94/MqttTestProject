@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 
@@ -48,6 +50,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         holder.user.setText(messages.get(position).getMessageUser());
         holder.textmsg.setText(messages.get(position).getMessageText());
 
+
+
     }
 
     @Override
@@ -59,12 +63,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView user;
         TextView textmsg;
+        TextView date;
 
         public ViewHolder(View itemView) {
             super(itemView);
             user = itemView.findViewById(R.id.textViewUser);
             textmsg = itemView.findViewById(R.id.textViewMessageText);
+            date = itemView.findViewById(R.id.textViewDate);
 
+            long displaydate = System.currentTimeMillis();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy h:mm a");
+            String dateString = sdf.format(displaydate);
+            date.setText(dateString);
 
         }
 

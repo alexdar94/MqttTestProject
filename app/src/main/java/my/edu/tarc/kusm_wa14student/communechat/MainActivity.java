@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     // user object available
                     for(int i = 0; i<response.body().size(); i++){
-                        Log.e("fuck "+i,response.body().get(i).getUsername()+" "+response.body().get(i).getTopic());
+                        Log.e("abc "+i,response.body().get(i).getUsername()+" "+response.body().get(i).getTopic());
                     }
                 } else {
                     // error response, no access to resource?

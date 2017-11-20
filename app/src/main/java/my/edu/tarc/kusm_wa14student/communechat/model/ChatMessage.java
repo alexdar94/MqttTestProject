@@ -7,24 +7,24 @@ import java.util.Date;
  */
 
 public class ChatMessage {
-    private int messageid;
+    private String messageid;
     private String messageText;
     private String messageUser;
 
     /*public ChatMessage() {
     }*/
 
-    public ChatMessage(int messageid, String messageText, String messageUser) {
+    public ChatMessage(String messageid, String messageText, String messageUser) {
         this.messageid = messageid;
         this.messageText = messageText;
         this.messageUser = messageUser;
     }
 
-    public int getMessageid() {
+    public String getMessageid() {
         return messageid;
     }
 
-    public void setMessageid(int messageid) {
+    public void setMessageid(String messageid) {
         this.messageid = messageid;
     }
 

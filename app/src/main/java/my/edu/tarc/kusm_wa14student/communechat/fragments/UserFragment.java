@@ -10,15 +10,15 @@ import my.edu.tarc.kusm_wa14student.communechat.R;
 
 public class UserFragment extends Fragment {
 
-    public UserFragment() {
-        // Required empty public constructor
-    }
+  public UserFragment() {
+    // Required empty public constructor
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false);
-    }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    return inflater.inflate(R.layout.fragment_user, container, false);
+  }
 
 }

@@ -94,16 +94,19 @@ public class MessageService extends Service {
         MqttMessageHandler handler = new MqttMessageHandler();
         handler.setReceived(message);
         if (handler.isReceiving()) {
-            intent.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            //intent.putExtra("message", message);
+            //LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            Log.e("Checking1", (message.substring(0,6).equals("003823")) + "");
+            if(message.substring(0,6).equals("003823")){
+                Log.e("Checking2",message);
+                intent.putExtra("ACK_SEND_MESSAGE", message);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                Log.e("Checking3",message);
+            }
+
+
         }
-        /*if(message.substring(0,6) == "003823"){
-            intent.putExtra("ACK_SUBSCRIBE_NEW_TOPIC", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        }else if(message.substring(0,6) == "003818"){
-            intent.putExtra("ACK_SEND_MESSAGE", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        }*/
+
 
 
 

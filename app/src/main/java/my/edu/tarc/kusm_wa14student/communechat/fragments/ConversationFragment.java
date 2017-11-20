@@ -39,8 +39,8 @@ public class ConversationFragment extends Fragment  {
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         ConversationAdapter2 adapter = new ConversationAdapter2(getContext(), conversations);
-        DisplayConversationTask2 abc = new DisplayConversationTask2(adapter);
-        abc.execute();
+        DisplayConversationTask2 display = new DisplayConversationTask2(adapter);
+        display.execute();
 
         mRecyclerView.setAdapter(adapter);
         return view;

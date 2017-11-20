@@ -22,6 +22,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntityHC4;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MessageService;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttAPI;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
+import my.edu.tarc.kusm_wa14student.communechat.internal.MqttMessageHandler;
 import my.edu.tarc.kusm_wa14student.communechat.internal.PhpAPI;
 import my.edu.tarc.kusm_wa14student.communechat.internal.ServiceGenerator;
 import my.edu.tarc.kusm_wa14student.communechat.model.ACLRule;
@@ -76,8 +78,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         username = etLogin.getText().toString();
         password = etPassword.getText().toString();
 
-        new abcTask().execute();
+//        new newConversationTask().execute();
 
+        //This is the button to sign up
+        //Used retrofit to sign up in cloudMQTT
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,6 +148,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 });
             }
         });
+        //This one use asyncresponse to sign in
         Signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,30 +186,35 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-    private class abcTask extends AsyncTask<Void, Void, Void> {
-        private void postData(String conversation_name) {
+    private class newConversationTask extends AsyncTask<String, Void, Void> {
+        private void postData(String conversation_name, String user_name, String user_name_B) {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://10.0.2.2:1234/webservices/insert_conversation.php");
 
             try {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
                 nameValuePairs.add(new BasicNameValuePair("conversation_name", conversation_name));
-                //nameValuePairs.add(new BasicNameValuePair("sender_id", created_at));
-                //nameValuePairs.add(new BasicNameValuePair("conversation_id", conversation_id));
-
+                nameValuePairs.add(new BasicNameValuePair("user_name", user_name));
+                nameValuePairs.add(new BasicNameValuePair("user_name_B", user_name_B));
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
+
+
+
             } catch (Exception e) {
                 Log.e("log_tag", "Error:  " + e.toString());
             }
 
         }
 
+
         @Override
-        protected Void doInBackground(Void... voids) {
-            postData("hao");
+        protected Void doInBackground(String... strings) {
+
+            postData("Welcome", "mic", "halo");
+
             return null;
         }
     }

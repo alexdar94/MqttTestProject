@@ -40,7 +40,7 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, String> 
     public static String conversationid;
     String conversationname;
     String createdAt;
-    public static String user_id;
+    public static String user_name;
     int role;
 
 
@@ -73,7 +73,7 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, String> 
             HttpEntity httpEntity = httpResponse.getEntity();
             // Read content & Log
             inputStream = httpEntity.getContent();
-            Log.e("fuck", inputStream.toString());
+            Log.e("Checking", inputStream.toString());
             return EntityUtils.toString(httpResponse.getEntity());
         } catch (UnsupportedEncodingException e1) {
             Log.e("UnsupportedEncodingException", e1.toString());
@@ -121,11 +121,11 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, String> 
                 conversationid = jObject.getString("conversation_id");
                 conversationname = jObject.getString("conversation_name");
                 createdAt = jObject.getString("created_at");
-                user_id = jObject.getString("user_id");
+                user_name = jObject.getString("user_name");
                 role = jObject.getInt("role");
 
-                Conversation data = new Conversation(conversationid, conversationname, role, createdAt, user_id, "https://www.idolator.com/wp-content/uploads/sites/10/2015/10/adele-hello.jpg", "welcome");
-                Log.e("success",conversationid + conversationname + role + createdAt + user_id + "" + "");
+                Conversation data = new Conversation(conversationid, conversationname, role, createdAt, user_name, "https://www.idolator.com/wp-content/uploads/sites/10/2015/10/adele-hello.jpg", "welcome");
+                Log.e("success",conversationid + conversationname + role + createdAt + user_name + "" + "");
 
                 conversations.add(data);
 

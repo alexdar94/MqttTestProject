@@ -47,7 +47,7 @@ public class ContactFragment extends Fragment {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("fuck","mMessageReceiver");
+            Log.e("checking","mMessageReceiver");
             String message = intent.getStringExtra("message");
             task = new UpdateListTask();
             task.execute(message);
@@ -175,7 +175,7 @@ public class ContactFragment extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
 
-            if (!strings[0].isEmpty()) {
+            /*if (!strings[0].isEmpty()) {
                 MqttMessageHandler handler = new MqttMessageHandler();
                 Log.e("doInBackground","doInBackground");
                 handler.setReceived(strings[0]);
@@ -207,8 +207,7 @@ public class ContactFragment extends Fragment {
                             break;
                     }
                 }
-            }
-
+            }*/
             return null;
         }
 

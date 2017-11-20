@@ -39,7 +39,7 @@ import my.edu.tarc.kusm_wa14student.communechat.model.ChatMessage;
 import static my.edu.tarc.kusm_wa14student.communechat.LoginActivity.username;
 
 import static my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2.conversationid;
-import static my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2.user_id;
+import static my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2.user_name;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -52,8 +52,9 @@ public class ChatActivity extends AppCompatActivity {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            updateList(message);
+            String message = intent.getStringExtra("ACK_SEND_MESSAGE");
+            String usermsg = message.substring(6);
+            updateList(usermsg);
             adapter.notifyDataSetChanged();
         }
     };
@@ -76,7 +77,9 @@ public class ChatActivity extends AppCompatActivity {
                 mMessageReceiver, new IntentFilter("MessageEvent"));
 
 
-        MqttHelper.subscribe(conversationid);
+
+
+        //MqttHelper.subscribe(conversationid);
 
         // Demo how u pass data from ConversationAdapter2 to Chat Activity
         Toast.makeText(this,"Start chatting with "+getIntent().getStringExtra("CONVERSATION_NAME")+" now!",Toast.LENGTH_LONG).show();
@@ -90,11 +93,12 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int i= 0;
                 inputText = input.getText().toString();
-                MqttHelper.publish("1", "003818 " + inputText);
+                MqttHelper.publish("1", "003823" + inputText);
                 Log.e("testing", inputText+ " " + username);
                 new insertMessageTask().execute((Void) null);
 
                 input.setText("");
+
             }
         });
 
@@ -112,8 +116,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void updateList(String msg){
-
-        ChatMessage messaging = new ChatMessage(2, msg, username);
+        ChatMessage messaging = new ChatMessage("", msg, username);
         messages.add(messaging);
         adapter.notifyDataSetChanged();
 
@@ -146,7 +149,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private class insertMessageTask extends AsyncTask<Void, Void, Boolean> {
 
-        private void postData(String messageText, String sender_id, String conversation_id ){
+        private void postData(String messageText, String user_name, String conversation_id ){
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://10.0.2.2:1234/webservices/insert_msg.php");
 
@@ -154,7 +157,7 @@ public class ChatActivity extends AppCompatActivity {
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 
                 nameValuePairs.add(new BasicNameValuePair("messageText", messageText));
-                nameValuePairs.add(new BasicNameValuePair("sender_id", sender_id));
+                nameValuePairs.add(new BasicNameValuePair("user_name", user_name));
                 nameValuePairs.add(new BasicNameValuePair("conversation_id", conversation_id));
 
 
@@ -171,10 +174,12 @@ public class ChatActivity extends AppCompatActivity {
         }
         @Override
         protected Boolean doInBackground(Void... voids) {
-            postData(inputText, user_id, conversationid);
-            Log.e("store msg to db",inputText+ " " + user_id + " " + conversationid);
+            postData(inputText, user_name, conversationid);
+            Log.e("store msg to db",inputText+ " " + user_name + " " + conversationid);
             return null;
         }
     }
+
+
 
 }

@@ -187,7 +187,7 @@ public final class MqttHelper {
                 mqttAndroidClient.unsubscribe(subscriptionTopic, null, new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
-                        Log.i(TAG, "Unsubscribeb to topic: " + subscriptionTopic + ".");
+                        Log.i(TAG, "Unsubscribe to topic: " + subscriptionTopic + ".");
                     }
 
                     @Override

@@ -1,9 +1,11 @@
 package my.edu.tarc.kusm_wa14student.communechat.internal;
 
+import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
 
+import my.edu.tarc.kusm_wa14student.communechat.ChatActivity;
 import my.edu.tarc.kusm_wa14student.communechat.model.ChatMessage;
 import my.edu.tarc.kusm_wa14student.communechat.model.Contact;
 
@@ -29,11 +31,11 @@ public class MqttMessageHandler {
     private static String ACK_RECEIVE_MESSAGE = "003818";
     private static String REQ_RECEIVE_MESSAGE = "003819";
 
-    private static String ACK_CONVERSATION_LIST = "003820";
-    private static String REQ_CONVERSATION_LIST = "003821";
+    private static String ACK_NEW_CONVERSATION = "003820";
+    private static String REQ_NEW_CONVERSATION = "003821";
 
-    private static String REQ_SUBSCRIBE_NEW_TOPIC = "003822";
-    private static String ACK_SUBSCRIBE_NEW_TOPIC = "003823";
+    private static String REQ_SEND_MESSAGE= "003822";
+    private static String ACK_SEND_MESSAGE= "003823";
 
     public MqttCommand mqttCommand;
     private String publish;
@@ -95,14 +97,19 @@ public class MqttMessageHandler {
                 message = (String) data;
                 sb.append(REQ_RECEIVE_MESSAGE + RESERVED_STRING + message.toString());
                 result = sb.toString();
-
                 break;
             }
-            case REQ_SUBSCRIBE_NEW_TOPIC:{
+            case REQ_SEND_MESSAGE:{
                 String newTopic;
                 newTopic = (String) data;
-                sb.append(REQ_SUBSCRIBE_NEW_TOPIC + RESERVED_STRING + newTopic.toString());
+                sb.append(REQ_SEND_MESSAGE + RESERVED_STRING + newTopic.toString());
                 result = sb.toString();
+                break;
+            }
+            case REQ_NEW_CONVERSATION:{
+                String newConversation;
+                newConversation = (String) data;
+                sb.append(REQ_NEW_CONVERSATION + RESERVED_STRING + newConversation.toString());
                 break;
             }
             case KEEP_ALIVE:{
@@ -137,13 +144,17 @@ public class MqttMessageHandler {
             }
             case "003818": {
                 this.mqttCommand = MqttCommand.ACK_RECEIVE_MESSAGE;
-
                 break;
             }
             case "003823":{
-                this.mqttCommand = MqttCommand.ACK_SUBSCRIBE_NEW_TOPIC;
-
+                this.mqttCommand = MqttCommand.ACK_SEND_MESSAGE;
+                //String newConversationId = message.substring(6);
                 break;
+            }
+            case "003820":{
+                this.mqttCommand = MqttCommand.ACK_NEW_CONVERSATION;
+                break;
+
             }
             default:
                 this.mqttCommand = null;
@@ -198,7 +209,7 @@ public class MqttMessageHandler {
     }
 
     public ArrayList<ChatMessage> getChatMessageList(){
-        if(mqttCommand == MqttCommand.ACK_RECEIVE_MESSAGE){
+        if(mqttCommand == MqttCommand.ACK_SEND_MESSAGE){
             received = received.substring(80);
             ArrayList<ChatMessage> chatMessages = new ArrayList<>();
             int temp = 0;
@@ -208,13 +219,13 @@ public class MqttMessageHandler {
 
                 ChatMessage chatmessage = null;
 
-                chatmessage.setMessageid(Integer.parseInt(data.substring(0,10)));
+                /*chatmessage.setMessageid(data.substring(0,10));
                 data = data.substring(10);
 
                 temp = Integer.parseInt(data.substring(0,10));
                 data = data.substring(10);
                 chatmessage.setMessageUser(data.substring(0, temp));
-                data = data.substring(temp);
+                data = data.substring(temp);*/
 
                 temp = Integer.parseInt(data.substring(0,60));
                 data = data.substring(60);
@@ -229,14 +240,14 @@ public class MqttMessageHandler {
     }
 
 
-
     public boolean isReceiving() {
         return (this.mqttCommand == MqttCommand.ACK_AUTHENTICATION ||
                 this.mqttCommand == MqttCommand.ACK_CONTACT_LIST ||
                 this.mqttCommand == MqttCommand.ACK_SEARCH_USER ||
                 this.mqttCommand == MqttCommand.ACK_CONTACT_DETAILS ||
                 this.mqttCommand == MqttCommand.ACK_RECEIVE_MESSAGE ||
-                this.mqttCommand == mqttCommand.ACK_SUBSCRIBE_NEW_TOPIC ||
+                this.mqttCommand == MqttCommand.ACK_SEND_MESSAGE ||
+                this.mqttCommand == MqttCommand.ACK_NEW_CONVERSATION ||
                 this.mqttCommand == MqttCommand.ACK_USER_PROFILE);
     }
 
@@ -253,8 +264,10 @@ public class MqttMessageHandler {
         ACK_SEARCH_USER,
         REQ_RECEIVE_MESSAGE,
         ACK_RECEIVE_MESSAGE,
-        REQ_SUBSCRIBE_NEW_TOPIC,
-        ACK_SUBSCRIBE_NEW_TOPIC,
+        REQ_SEND_MESSAGE,
+        ACK_SEND_MESSAGE,
+        REQ_NEW_CONVERSATION,
+        ACK_NEW_CONVERSATION,
         KEEP_ALIVE;
     }
 

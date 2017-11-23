@@ -37,7 +37,6 @@ import my.edu.tarc.kusm_wa14student.communechat.model.ChatMessage;
 
 
 import static my.edu.tarc.kusm_wa14student.communechat.LoginActivity.username;
-
 import static my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2.conversationid;
 import static my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2.user_name;
 
@@ -59,6 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     };
 
+
     public static void clearAsyncTask(AsyncTask<?, ?, ?> asyncTask) {
         if (asyncTask != null) {
             if (!asyncTask.isCancelled()) {
@@ -79,8 +79,6 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-        //MqttHelper.subscribe(conversationid);
-
         // Demo how u pass data from ConversationAdapter2 to Chat Activity
         Toast.makeText(this,"Start chatting with "+getIntent().getStringExtra("CONVERSATION_NAME")+" now!",Toast.LENGTH_LONG).show();
 
@@ -93,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int i= 0;
                 inputText = input.getText().toString();
-                MqttHelper.publish("1", "003823" + inputText);
+                MqttHelper.publish(conversationid, "003823" + inputText);
                 Log.e("testing", inputText+ " " + username);
                 new insertMessageTask().execute((Void) null);
 
@@ -101,9 +99,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
-
-        //messages.add(new ChatMessage(123, "qwerty", "Chunhan"));
 
         RecyclerView chat = (RecyclerView)findViewById(R.id.recyclerview_chat);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());

@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,8 @@ import java.util.List;
 
 import my.edu.tarc.kusm_wa14student.communechat.adapter.ConversationAdapter2;
 import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
+
+import static my.edu.tarc.kusm_wa14student.communechat.LoginActivity.username;
 
 
 public class DisplayConversationTask2 extends AsyncTask<String, String, String> {
@@ -60,6 +63,8 @@ public class DisplayConversationTask2 extends AsyncTask<String, String, String> 
         String url_select = "http://10.0.2.2:1234/webservices/get_conversation.php";
 
         ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+
+        param.add(new BasicNameValuePair("user_name", username));
 
         try {
             // Set up HTTP post

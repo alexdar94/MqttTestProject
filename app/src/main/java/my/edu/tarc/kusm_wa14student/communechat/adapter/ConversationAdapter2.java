@@ -57,6 +57,7 @@ public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapt
             conversationName = v.findViewById(R.id.textview_conversation_name);
             lastMessage = v.findViewById(R.id.textView_latest_message);
             v.setOnClickListener(this);
+
         }
 
         @Override

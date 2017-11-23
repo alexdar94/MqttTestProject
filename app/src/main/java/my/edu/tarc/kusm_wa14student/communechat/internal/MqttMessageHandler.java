@@ -148,7 +148,6 @@ public class MqttMessageHandler {
             }
             case "003823":{
                 this.mqttCommand = MqttCommand.ACK_SEND_MESSAGE;
-                //String newConversationId = message.substring(6);
                 break;
             }
             case "003820":{

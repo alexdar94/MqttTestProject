@@ -175,7 +175,7 @@ public class ContactFragment extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
 
-            /*if (!strings[0].isEmpty()) {
+            if (!strings[0].isEmpty()) {
                 MqttMessageHandler handler = new MqttMessageHandler();
                 Log.e("doInBackground","doInBackground");
                 handler.setReceived(strings[0]);
@@ -207,7 +207,7 @@ public class ContactFragment extends Fragment {
                             break;
                     }
                 }
-            }*/
+            }
             return null;
         }
 

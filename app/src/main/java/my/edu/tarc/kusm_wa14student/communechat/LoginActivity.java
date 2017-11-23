@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     Button Signin;
     ProgressBar progressBar;
     private SharedPreferences mPrefs;
-    static String username;
+    public static String username;
     static String password;
 
     @Override
@@ -77,8 +77,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         Signin = (Button) findViewById(R.id.buttonSignin);
         username = etLogin.getText().toString();
         password = etPassword.getText().toString();
-
-//        new newConversationTask().execute();
 
         //This is the button to sign up
         //Used retrofit to sign up in cloudMQTT
@@ -186,36 +184,4 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-    private class newConversationTask extends AsyncTask<String, Void, Void> {
-        private void postData(String conversation_name, String user_name, String user_name_B) {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://10.0.2.2:1234/webservices/insert_conversation.php");
-
-            try {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-
-                nameValuePairs.add(new BasicNameValuePair("conversation_name", conversation_name));
-                nameValuePairs.add(new BasicNameValuePair("user_name", user_name));
-                nameValuePairs.add(new BasicNameValuePair("user_name_B", user_name_B));
-
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-
-
-
-            } catch (Exception e) {
-                Log.e("log_tag", "Error:  " + e.toString());
-            }
-
-        }
-
-
-        @Override
-        protected Void doInBackground(String... strings) {
-
-            postData("Welcome", "mic", "halo");
-
-            return null;
-        }
-    }
 }

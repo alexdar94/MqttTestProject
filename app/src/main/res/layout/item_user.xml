@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageview_user_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@android:drawable/stat_sys_phone_call_forward"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/textview_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="11dp"
+        android:layout_toEndOf="@+id/imageview_user_pic"
+        android:text="User name"
+        android:textSize="22sp" />
+
+
+</RelativeLayout>

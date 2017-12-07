@@ -37,6 +37,7 @@ import com.squareup.picasso.Picasso;
 public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapter2.ViewHolder> {
     private Context context;
     private static List<Conversation> conversations;
+    public static String conversationId;
 
     public ConversationAdapter2(Context context, List<Conversation> conversations) {
         this.context = context;
@@ -58,6 +59,7 @@ public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapt
             lastMessage = v.findViewById(R.id.textView_latest_message);
             v.setOnClickListener(this);
 
+
         }
 
         @Override
@@ -65,7 +67,11 @@ public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapt
             Intent intent = new Intent(context, ChatActivity.class);
             // Pass ur object here, check out serializable for object passing
             intent.putExtra("CONVERSATION_NAME",conversations.get(getAdapterPosition()).conversation_name);
+//            Intent intentId = new Intent(context, ChatActivity.class);
+//            intent.putExtra("CONVERSATION_ID", conversations.get(getAdapterPosition()).conversation_id);
+            conversationId = conversations.get(getAdapterPosition()).conversation_id;
             context.startActivity(intent);
+            notifyDataSetChanged();
         }
     }
 
@@ -87,6 +93,7 @@ public class ConversationAdapter2 extends RecyclerView.Adapter<ConversationAdapt
     public int getItemCount() {
         return conversations.size();
     }
+
 
 
 }

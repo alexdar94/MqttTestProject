@@ -11,6 +11,7 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import my.edu.tarc.kusm_wa14student.communechat.ChatActivity;
 import my.edu.tarc.kusm_wa14student.communechat.LoginActivity;
 
 /**
@@ -20,6 +21,7 @@ import my.edu.tarc.kusm_wa14student.communechat.LoginActivity;
 public class MessageService extends Service {
 
     private String TAG = "MessageService";
+    public static String subConversationId;
 
     private boolean isRunning;
 
@@ -90,33 +92,33 @@ public class MessageService extends Service {
     private void sendMessage(String message) {
         Log.i(TAG, "Broadcasting message");
         Intent intent = new Intent("MessageEvent");
+        Intent newCon = new Intent("ConversationEvent");
         Log.e("sendMessage",message);
         MqttMessageHandler handler = new MqttMessageHandler();
         handler.setReceived(message);
         if (handler.isReceiving()) {
-            //intent.putExtra("message", message);
-            //LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-            Log.e("Checking", (message.substring(0,6).equals("003823")) + "");
+            Log.e("CheckingSendMsg", (message.substring(0,6).equals("003823")) + "");
+            Log.e("Checkingnewconversation", (message.substring(0,6).equals("003820")) + "");
             if(message.substring(0,6).equals("003823")){
                 Log.e("SendMessageChecking",message);
                 intent.putExtra("ACK_SEND_MESSAGE", message);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                 Log.e("SendMessageResult",message);
+                Log.e("abc",intent.toString());
+//                Log.e("abc",newCon.toString());
             }else if(message.substring(0,6).equals("003820")){
-                Log.e("NewConversationChecking",message);
-                String subConversationId = message.substring(6);
+                subConversationId = message.substring(6);
                 MqttHelper.subscribe(subConversationId);
-                intent.putExtra("ACK_NEW_CONVERSATION", message);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                newCon.putExtra("ACK_NEW_CONVERSATION", message);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(newCon);
                 Log.e("NewConversationResult",message);
+//                Log.e("abc",intent.toString());
+                Log.e("abc",newCon.toString());
+            }else{
+                Log.e("","Nothing happen");
             }
 
-
         }
-
-
-
-
 
     }
 

@@ -45,7 +45,7 @@ public class DisplayUserTask extends AsyncTask<String, String, String> {
     StringBuffer finalBufferData;
     UserAdapter adapter;
     public static String username_B;
-    int role;
+
 
 
     public DisplayUserTask(UserAdapter adapter){
@@ -59,10 +59,9 @@ public class DisplayUserTask extends AsyncTask<String, String, String> {
 
         String url_select = "http://10.0.2.2:1234/webservices/get_user.php";
 
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>(1);
 
             param.add(new BasicNameValuePair("user_name", username));
-
 
             try {
                 // Set up HTTP post

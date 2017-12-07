@@ -4,6 +4,7 @@ import my.edu.tarc.kusm_wa14student.communechat.R;
 import my.edu.tarc.kusm_wa14student.communechat.adapter.ConversationAdapter2;
 import my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
+import my.edu.tarc.kusm_wa14student.communechat.model.ChatMessage;
 import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
 
 import android.content.BroadcastReceiver;
@@ -23,33 +24,21 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import static my.edu.tarc.kusm_wa14student.communechat.LoginActivity.username;
 
 
 public class ConversationFragment extends Fragment  {
-
-    private ConversationAdapter2 refresh;
-    private BroadcastReceiver newConversationMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("ACK_NEW_CONVERSATION");
-            String subConversationId = message.substring(6);
-            MqttHelper.subscribe(subConversationId);
-        }
-    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*LocalBroadcastManager.getInstance(getActivity().registerReceiver(
-                newConversationMessageReceiver, new IntentFilter("MessageEvent")));*/
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_conversation, container, false);
 
         // Convert ur conversation JSON into Conversation java object
@@ -68,6 +57,7 @@ public class ConversationFragment extends Fragment  {
         display.execute();
 
         mRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
         return view;

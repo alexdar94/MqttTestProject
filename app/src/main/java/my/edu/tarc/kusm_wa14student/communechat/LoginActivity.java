@@ -35,6 +35,7 @@ import my.edu.tarc.kusm_wa14student.communechat.internal.MqttAPI;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttHelper;
 import my.edu.tarc.kusm_wa14student.communechat.internal.MqttMessageHandler;
 import my.edu.tarc.kusm_wa14student.communechat.internal.PhpAPI;
+import my.edu.tarc.kusm_wa14student.communechat.internal.RegisterTask;
 import my.edu.tarc.kusm_wa14student.communechat.internal.ServiceGenerator;
 import my.edu.tarc.kusm_wa14student.communechat.model.ACLRule;
 import my.edu.tarc.kusm_wa14student.communechat.model.Conversation;
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     ProgressBar progressBar;
     private SharedPreferences mPrefs;
     public static String username;
-    static String password;
+    public static String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 //final String password = etPassword.getText().toString();
 
                 final MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
-                // Register user
+                // RegisterTask user
                 service.createNewUser(new MqttUser(username, password)).enqueue(new Callback<MqttUser>() {
                     @Override
                     public void onResponse(Call<MqttUser> call, Response<MqttUser> response) {
@@ -95,12 +96,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                             // user object available
                             MqttUser currentUser = new MqttUser(username, password);
 
-                            HashMap<String, String> postData = new HashMap<String, String>();
-                            postData.put("txtUsername", username);
-                            postData.put("txtPassword", password);
-
-                            PostResponseAsyncTask task = new PostResponseAsyncTask(LoginActivity.this, postData, (AsyncResponse) LoginActivity.this);
-                            task.execute("http://10.0.2.2:1234/webservices/register.php");
+                            new RegisterTask().execute();
 
                             // Save current user to Android local storage
                             // using shared preference (one of the android local storage options)
@@ -118,9 +114,11 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                                     if (response.isSuccessful()) {
                                         MqttHelper.subscribe(username);
                                         Toast.makeText(LoginActivity.this, "Subscribed successfully to " + username, Toast.LENGTH_SHORT).show();
+                                        Log.e("MQTT", "subscribe successfully");
                                     } else {
                                         // error response, no access to resource?
                                         Toast.makeText(LoginActivity.this, "Unable to subcribe to " + username, Toast.LENGTH_SHORT).show();
+                                        Log.e("MQTT","Fail to subscribe");
                                     }
                                 }
 
@@ -157,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 postData.put("txtPassword", password);
                 PostResponseAsyncTask task = new PostResponseAsyncTask(LoginActivity.this, postData, (AsyncResponse) LoginActivity.this);
                 task.execute("http://10.0.2.2:1234/webservices/Login.php");
-                Log.e("Checking", username);
+
             }
         });
     }
@@ -177,6 +175,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             prefsEditor.commit();
             MqttHelper.subscribe(etLogin.getText().toString());
             Toast.makeText(this, "Login successfully", Toast.LENGTH_LONG).show();
+            Log.e("Login", username);
             Intent next = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(next);
         } else {

@@ -43,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        //Register to listen broadcast message
+        //RegisterTask to listen broadcast message
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("MessageEvent"));
 
@@ -95,5 +95,3 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 }
-
-

@@ -127,8 +127,6 @@ public class ChatFragment extends Fragment  {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         conversationListView = (ListView) rootView.findViewById(R.id.listView_conversation);
-        //editText = (EditText) rootView.findViewById(R.id.editTextChat);
-        //btn = (Button) rootView.findViewById(R.id.button);
         textViewNoCurrentChat = rootView.findViewById(R.id.textView_no_current_chat);
         linearLayoutChatView = rootView.findViewById(R.id.linearLayout_chatView);
 

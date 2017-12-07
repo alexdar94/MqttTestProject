@@ -24,9 +24,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +34,10 @@ import my.edu.tarc.kusm_wa14student.communechat.model.ChatMessage;
 
 
 import static my.edu.tarc.kusm_wa14student.communechat.LoginActivity.username;
+import static my.edu.tarc.kusm_wa14student.communechat.adapter.ConversationAdapter2.conversationId;
 import static my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2.conversationid;
 import static my.edu.tarc.kusm_wa14student.communechat.internal.DisplayConversationTask2.user_name;
+import static my.edu.tarc.kusm_wa14student.communechat.internal.MessageService.subConversationId;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -48,16 +47,29 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter adapter;
     private Bundle bundle = new Bundle();
     String inputText;
+    static String message;
+    static String usermsg;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("ACK_SEND_MESSAGE");
-            String usermsg = message.substring(6);
+//            Log.e("chatactivity", message);
+            message = intent.getStringExtra("ACK_SEND_MESSAGE");
+            usermsg = message.substring(6);
+            Log.e("chatactivity", message);
             updateList(usermsg);
             adapter.notifyDataSetChanged();
         }
     };
+    private BroadcastReceiver mNewConversationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            message = intent.getStringExtra("ACK_NEW_CONVERSATION");
+            usermsg = message.substring(6);
+            updateList(usermsg);
+//            adapter.notifyDataSetChanged();
 
+        }
+    };
 
     public static void clearAsyncTask(AsyncTask<?, ?, ?> asyncTask) {
         if (asyncTask != null) {
@@ -73,14 +85,15 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+//        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(
+//                mNewConversationReceiver, new IntentFilter("ConversationEvent"));
+
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(
                 mMessageReceiver, new IntentFilter("MessageEvent"));
 
 
-
-
-        // Demo how u pass data from ConversationAdapter2 to Chat Activity
-        Toast.makeText(this,"Start chatting with "+getIntent().getStringExtra("CONVERSATION_NAME")+" now!",Toast.LENGTH_LONG).show();
+            // Demo how u pass data from ConversationAdapter2 to Chat Activity
+        Toast.makeText(this, "Start chatting with " + getIntent().getStringExtra("USER_NAME") + " now!", Toast.LENGTH_LONG).show();
 
 
         send = (Button)findViewById(R.id.button);
@@ -89,12 +102,17 @@ public class ChatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i= 0;
                 inputText = input.getText().toString();
-                MqttHelper.publish(conversationid, "003823" + inputText);
+//                Log.e("conversationid",conversationid);
+//                Log.e("subconversationid",subConversationId);
+
+//                if(message.substring(0,6) != "003823"){
+//                    MqttHelper.publish(subConversationId, "003823" + inputText);
+//                }else{
+                    MqttHelper.publish(conversationId, "003823" + inputText);
+//                }
                 Log.e("testing", inputText+ " " + username);
                 new insertMessageTask().execute((Void) null);
-
                 input.setText("");
 
             }
@@ -111,37 +129,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void updateList(String msg){
+
         ChatMessage messaging = new ChatMessage("", msg, username);
         messages.add(messaging);
         adapter.notifyDataSetChanged();
 
     }
-    private class ReceiveChatListTask extends AsyncTask<String, Void, Void>{
-
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            if (!strings[0].isEmpty()){
-                MqttMessageHandler handler = new MqttMessageHandler();
-                Log.e("doInBackground","doInBackground");
-                handler.setReceived(strings[0]);
-                if(handler.mqttCommand == null){
-                    switch (handler.mqttCommand){
-                        case ACK_RECEIVE_MESSAGE:{
-                            messages = handler.getChatMessageList();
-                            for (ChatMessage temp: messages)
-                                messages.add(temp);
-                            break;
-                        }
-
-                    }
-                }
-            }
-            return null;
-        }
-        }
-
-
     private class insertMessageTask extends AsyncTask<Void, Void, Boolean> {
 
         private void postData(String messageText, String user_name, String conversation_id ){

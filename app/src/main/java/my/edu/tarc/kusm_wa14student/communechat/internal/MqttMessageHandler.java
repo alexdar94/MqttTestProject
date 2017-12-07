@@ -207,37 +207,6 @@ public class MqttMessageHandler {
         return null;
     }
 
-    public ArrayList<ChatMessage> getChatMessageList(){
-        if(mqttCommand == MqttCommand.ACK_SEND_MESSAGE){
-            received = received.substring(80);
-            ArrayList<ChatMessage> chatMessages = new ArrayList<>();
-            int temp = 0;
-            String data = received;
-
-            while(!data.isEmpty()){
-
-                ChatMessage chatmessage = null;
-
-                /*chatmessage.setMessageid(data.substring(0,10));
-                data = data.substring(10);
-
-                temp = Integer.parseInt(data.substring(0,10));
-                data = data.substring(10);
-                chatmessage.setMessageUser(data.substring(0, temp));
-                data = data.substring(temp);*/
-
-                temp = Integer.parseInt(data.substring(0,60));
-                data = data.substring(60);
-                chatmessage.setMessageText(data.substring(0, temp));
-                data = data.substring(temp);
-
-                chatMessages.add(chatmessage);
-            }
-            return chatMessages;
-        }
-        return null;
-    }
-
 
     public boolean isReceiving() {
         return (this.mqttCommand == MqttCommand.ACK_AUTHENTICATION ||

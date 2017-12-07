@@ -92,70 +92,6 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<MqttUser>(){}.getType();
         currentUser= gson.fromJson(mPrefs.getString("CURRENT_USER", ""), type);
 
-        //MqttAPI service = ServiceGenerator.createService(MqttAPI.class);
-
-        // Create new user
-        /*service.createNewUser(new MqttUser("lee","123")).enqueue(new Callback<MqttUser>() {
-            @Override
-            public void onResponse(Call<MqttUser> call, Response<MqttUser> response) {
-                if (response.isSuccessful()) {
-                    // user object available
-
-
-                } else {
-                    // error response, no access to resource?
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MqttUser> call, Throwable t) {
-                // something went completely south (like no internet connection)
-                Toast.makeText(MainActivity.this, "Internet connection failed", Toast.LENGTH_LONG).show();
-                Log.e("Error createNewUser", t.getMessage());
-            }
-        });
-
-        // List all ACL rules
-        service.listACLRules().enqueue(new Callback<List<ACLRule>>() {
-            @Override
-            public void onResponse(Call<List<ACLRule>> call, Response<List<ACLRule>> response) {
-                if (response.isSuccessful()) {
-                    // user object available
-                    for(int i = 0; i<response.body().size(); i++){
-                        Log.e("abc "+i,response.body().get(i).getUsername()+" "+response.body().get(i).getTopic());
-                    }
-                } else {
-                    // error response, no access to resource?
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ACLRule>> call, Throwable t) {
-                // something went completely south (like no internet connection)
-                Toast.makeText(MainActivity.this, "Internet connection failed", Toast.LENGTH_LONG).show();
-                Log.e("Error createNewUser", t.getMessage());
-            }
-        });
-
-        // Assign new topic to user, topic cannot have space
-        service.createNewACLRule(new ACLRule("newtopic", true, false, "admin")).enqueue(new Callback<ACLRule>() {
-            @Override
-            public void onResponse(Call<ACLRule> call, Response<ACLRule> response) {
-                if (response.isSuccessful()) {
-                    // user object available
-                } else {
-                    // error response, no access to resource?
-                }
-                Log.e("success", response.toString());
-            }
-
-            @Override
-            public void onFailure(Call<ACLRule> call, Throwable t) {
-                // something went completely south (like no internet connection)
-                Log.e("Error createNewUser", t.getMessage());
-            }
-        });*/
-
         //Start service
         startService(new Intent(MainActivity.this, MessageService.class));
 
@@ -222,9 +158,11 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.contact_tab:
                         viewPager.setCurrentItem(0);
+                        adapter.notifyDataSetChanged();
                         break;
                     case R.id.chat_tab:
                         viewPager.setCurrentItem(1);
+                        adapter.notifyDataSetChanged();
                         break;
                     case R.id.search_tab:
                         viewPager.setCurrentItem(2);

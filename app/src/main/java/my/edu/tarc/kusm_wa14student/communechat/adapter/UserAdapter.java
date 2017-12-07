@@ -1,8 +1,15 @@
 package my.edu.tarc.kusm_wa14student.communechat.adapter;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +21,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import my.edu.tarc.kusm_wa14student.communechat.ChatActivity;
+import my.edu.tarc.kusm_wa14student.communechat.MainActivity;
 import my.edu.tarc.kusm_wa14student.communechat.R;
+import my.edu.tarc.kusm_wa14student.communechat.fragments.ListUserFragment;
 import my.edu.tarc.kusm_wa14student.communechat.internal.NewConversationTask;
 import my.edu.tarc.kusm_wa14student.communechat.model.User;
 
-/**
- * Created by silen on 11/21/2017.
- */
+
+
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context context;
@@ -49,13 +57,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
+
             Intent intent = new Intent(context, ChatActivity.class);
-            // Pass ur object here, check out serializable for object passing
+//             Pass ur object here, check out serializable for object passing
             intent.putExtra("USER_NAME",users.get(getAdapterPosition()).user_name);
             context.startActivity(intent);
-
+            String userB = users.get(getAdapterPosition()).user_name;
             NewConversationTask newConversation = new NewConversationTask();
-            newConversation.execute();
+            newConversation.execute(userB);
+
+
+
+
+
         }
     }
 

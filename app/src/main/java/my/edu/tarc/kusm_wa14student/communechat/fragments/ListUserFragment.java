@@ -41,6 +41,7 @@ public class ListUserFragment extends Fragment{
         display.execute();
 
         userRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         return view;
     }
 }

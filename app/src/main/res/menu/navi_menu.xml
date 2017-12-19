@@ -27,5 +27,12 @@
             android:icon="@drawable/ic_person"
             android:title="@string/nav_tab4"
             app:showAsAction="always" />
+        <item
+            android:id="@+id/feedback_tab"
+            android:checked="false"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="@string/nav_tab5"
+            app:showAsAction="always" />
+
     </group>
 </menu>

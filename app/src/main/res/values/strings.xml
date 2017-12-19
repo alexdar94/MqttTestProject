@@ -4,6 +4,7 @@
     <string name="nav_tab2">Chat</string>
     <string name="nav_tab3">Search</string>
     <string name="nav_tab4">Me</string>
+    <string name="nav_tab5">Feedback</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -25,4 +26,10 @@
     <string name="prompt_username">Username or Email</string>
     <string name="signup"> Sign Up</string>
     <string name="title_activity_conversation">conversationActivity</string>
+    <string name="feedbackdescription">Your feedback is highly appreciated and will help to improve our application to serve you better</string>
+    <string name="enterfeedback">Enter your feedback here</string>
+    <string name="send">Send</string>
+    <string name="patch1">Developer (Alpha version 1)</string>
+    <string name="Information">Information details</string>
+
 </resources>

@@ -65,11 +65,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             String userB = users.get(getAdapterPosition()).user_name;
             NewConversationTask newConversation = new NewConversationTask();
             newConversation.execute(userB);
-
-
-
-
-
         }
     }
 

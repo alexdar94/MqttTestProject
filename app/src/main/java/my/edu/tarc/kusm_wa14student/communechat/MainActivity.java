@@ -27,6 +27,7 @@ import my.edu.tarc.kusm_wa14student.communechat.adapter.ViewPagerAdapter;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.ChatFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.ContactFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.ConversationFragment;
+import my.edu.tarc.kusm_wa14student.communechat.fragments.FeedbackFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.ListUserFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.SearchFragment;
 import my.edu.tarc.kusm_wa14student.communechat.fragments.UserFragment;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     //CustomViewPagerAdapter Variables;
     private ViewPagerAdapter adapter;
-    private int NUMBER_OF_SCREENS = 4;
+    private int NUMBER_OF_SCREENS = 5;
     private MenuItem prevMenuItem;
 
     //MainActivity Views
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private ChatFragment chatFragment;
     private ConversationFragment conversationFragment;
     private ListUserFragment listUserFragment;
+    private FeedbackFragment feedbackFragment;
 
     private BroadcastReceiver mMessageReceiver;
 
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         userFragment = new UserFragment();
         conversationFragment = new ConversationFragment();
         listUserFragment = new ListUserFragment();
+        feedbackFragment = new FeedbackFragment();
 
         adapter.addFragment(listUserFragment);
 //        adapter.addFragment(contactFragment);
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(conversationFragment);
         adapter.addFragment(searchFragment);
         adapter.addFragment(userFragment);
+        adapter.addFragment(feedbackFragment);
 
         adapter.notifyDataSetChanged();
 
@@ -170,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.user_tab:
                         viewPager.setCurrentItem(3);
                         break;
+                    case R.id.feedback_tab:
+                        viewPager.setCurrentItem(4);
+                        break;
+
                 }
                 return false;
             }
